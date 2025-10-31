@@ -1,0 +1,144 @@
+
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+ 
+  body {
+
+    background-image: url("zammot_bg.webp");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover;        
+    background-attachment: fixed;    
+    min-height: 100vh;   
+    display: flex;
+    align-items: center;
+    justify-content: center;         
+  } 
+  
+ 
+  header {
+    background-color: rgba(230, 240, 250, 0.80); 
+    border: 2px solid #444;      
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px;
+  }
+  
+  
+  .encabezado {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 18px;
+  }
+  
+  .logo {
+    height: 70px;                 
+    width: auto;
+  }
+  
+  .encabezado h1 {
+    margin: 0;
+    font-size: 32px;             
+  }
+  
+  .slogan {
+    margin: 0;
+    font-size: 18px;              
+    font-weight: normal;
+    color: #333;
+  }
+  
+  .container {
+    border: 2px solid rgba(255,255,255,0.2);
+    width: 90%;
+    max-width: 450px;
+    padding: 30px 40px;
+    border-radius: 10px;
+    color: #fff;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+
+
+  }
+  .container h1 {
+    text-align: center;
+    margin-bottom: 35px;
+
+  }
+
+  form{
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+  }
+
+  form a {
+    text-decoration: none;
+    color: #fff;
+  }
+
+  .input-box {
+    border: 2px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    height: 30px;
+    border-radius: 40px;
+    padding: 20px;
+  }
+  .input-box input {
+    flex:1;
+    background-color: transparent;
+    border: 0;
+    outline: 0;
+    font-size: 16px;
+    color: #fff;
+    min-width: 0;
+
+  }
+
+  .remember-password {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 14.5px;
+
+  }
+
+  .remember-password label {
+    display: flex;
+    align-items: center;
+  }
+
+  .remember-password input {
+    margin-right: 5px;
+  }
+  form a:hover {
+    text-decoration: underline;
+
+  }
+.btn {
+    border-radius: 30px;
+    border: 0;
+    outline: 0;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px;
+    cursor: pointer;
+
+}
+.register-link {
+    text-align: center;
+    font-size: 14.5px;
+
+}
+  
+.register-link a {
+    margin-left: 8px;
+}
+  
