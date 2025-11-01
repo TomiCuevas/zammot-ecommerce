@@ -1,0 +1,23 @@
+
+/*Logo*/
+.logo {
+  height: 70px;
+  width: auto;
+}
+
+/* Logo dentro del navbar (más chico) */
+.navbar-brand .logo {
+  height: 28px;
+  width: auto;
+  margin-right: .5rem;
+  vertical-align: middle;
+}
+
+.titulo {
+  text-align: center;
+  margin-top: 50px;
+  font-weight: bold;
+  color: #697d91;
+  
+  
+}

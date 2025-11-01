@@ -1,144 +1,142 @@
-
 html, body {
-    height: 100%;
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-  
- 
-  body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
 
-    background-image: url("zammot_bg.webp");
-    background-repeat: no-repeat;
-    background-position: center top;
-    background-size: cover;        
-    background-attachment: fixed;    
-    min-height: 100vh;   
-    display: flex;
-    align-items: center;
-    justify-content: center;         
-  } 
-  
- 
-  header {
-    background-color: rgba(230, 240, 250, 0.80); 
-    border: 2px solid #444;      
-    border-radius: 8px;
-    padding: 20px;
-    margin: 10px;
-  }
-  
-  
-  .encabezado {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 18px;
-  }
-  
-  .logo {
-    height: 70px;                 
-    width: auto;
-  }
-  
-  .encabezado h1 {
-    margin: 0;
-    font-size: 32px;             
-  }
-  
-  .slogan {
-    margin: 0;
-    font-size: 18px;              
-    font-weight: normal;
-    color: #333;
-  }
-  
-  .container {
-    border: 2px solid rgba(255,255,255,0.2);
-    width: 90%;
-    max-width: 450px;
-    padding: 30px 40px;
-    border-radius: 10px;
-    color: #fff;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+body {
+  background: url("../img/zammot_bg.webp") center top / cover no-repeat fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+/* Contenedor general: logo + login centrados */
+.login-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  padding: 40px;
+}
 
-  }
-  .container h1 {
-    text-align: center;
-    margin-bottom: 35px;
+/* --- Logo (izquierda) --- */
+.brand-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.85);
+  color: #111;
+  padding: 25px 35px;
+  border-radius: 12px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25);
+}
 
-  }
+.brand-logo {
+  height: 90px;
+  width: auto;
+}
 
-  form{
-    display: flex;
-    flex-direction: column;
-    gap:30px;
-  }
+.brand-name {
+  font-size: 32px;
+  margin: 0;
+  font-weight: 700;
+}
 
-  form a {
-    text-decoration: none;
-    color: #fff;
-  }
+.brand-slogan {
+  margin: 0;
+  font-size: 15px;
+  color: #333;
+}
 
-  .input-box {
-    border: 2px solid rgba(255,255,255,0.2);
-    display: flex;
-    align-items: center;
-    height: 30px;
-    border-radius: 40px;
-    padding: 20px;
-  }
-  .input-box input {
-    flex:1;
-    background-color: transparent;
-    border: 0;
-    outline: 0;
-    font-size: 16px;
-    color: #fff;
-    min-width: 0;
+/* --- Formulario (derecha) --- */
+.login-card {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(15px);
+  border-radius: 12px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+  padding: 45px 50px;
+  width: 420px;
+  color: #fff;
+}
 
-  }
+.login-card h1 {
+  text-align: center;
+  margin-bottom: 35px;
+  font-weight: bold;
+}
 
-  .remember-password {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 15px;
-    font-size: 14.5px;
+.input-box {
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 40px;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
 
-  }
+.input-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 16px;
+}
 
-  .remember-password label {
-    display: flex;
-    align-items: center;
-  }
+.input-box input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
 
-  .remember-password input {
-    margin-right: 5px;
-  }
-  form a:hover {
-    text-decoration: underline;
+.remember-password {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
 
-  }
+.remember-password a {
+  color: #a4e6c9;
+  text-decoration: none;
+}
+
 .btn {
-    border-radius: 30px;
-    border: 0;
-    outline: 0;
-    font-size: 15px;
-    font-weight: 500;
-    padding: 10px;
-    cursor: pointer;
-
+  border-radius: 40px;
+  padding: 10px;
+  font-weight: 600;
+  font-size: 16px;
 }
+
 .register-link {
-    text-align: center;
-    font-size: 14.5px;
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
 
-}
-  
 .register-link a {
-    margin-left: 8px;
+  color: #a4e6c9;
+  text-decoration: none;
 }
-  
+
+/* Responsive para celulares */
+@media (max-width: 900px) {
+  .login-wrapper {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .brand-logo {
+    height: 70px;
+  }
+
+  .brand-name {
+    font-size: 26px;
+  }
+
+  .login-card {
+    width: 90%;
+    padding: 30px;
+  }
+}
+
+

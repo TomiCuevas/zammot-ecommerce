@@ -1,38 +1,290 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZAMMOT-Camisas</title>
-    <link rel="stylesheet" href="styles.css">
 
-</head>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>ZAMMOT-Camisas</title>
+        <link rel="icon" type="image/webp" href="../styles/img/zammot_bowtie.webp">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="../styles/css/destacados.css">
+        
+    </head>
 
-<body>
-    <header>
-        <div class="encabezado">
-          <img src="zammot_bowtie.webp" alt="ZAMMOT Logo" class="logo">
-      
-          <div>
-            <h1>ZAMMOT</h1>
-            <p class="slogan">Tus productos de confianza</p>
-          </div>
-        </div>
+    <body data-bs-theme="dark">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+          <div class="container-fluid">
+             <a class="navbar-brand"><img src="../styles/img/zammot_bowtie.webp" alt="ZAMMOT Logo" class="logo"> ZAMMOT</a>
 
-        <nav>
-          <ul>
-            <li><a href="index.html">HOMELANDER</a></li>
-            <li><a href="camisas.html">Camisas</a></li>
-            <li><a href="trajes.html">Trajes</a></li>
-            <li><a href="zapatos.html">Zapatos</a></li>
-            <li class="pull-right"><a href="Login.html">Logout</a></li>
-          </ul>
-        </nav>
-      </header>
+             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+             </button>
 
-  <main>
-    <h1>CAMISASSS </h1>
-  </main>
+              <div class="collapse navbar-collapse" id="navbar-collapse">
+                    <ul class="navbar-nav">
 
-</body>
+                        <li class="nav-item">
+                        <a href="./home.html" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item">
+                        <a href="./destacados.html" class="nav-link ">Destacados</a>
+                        </li>
+                        <li class="nav-item">
+                        <a href="./camisas.html" class="nav-link ">Camisas</a>
+                        </li>
+
+                        <li class="nav-item">
+                          <a href="./zapatos.html" class="nav-link">Zapatos</a>
+                        </li>
+
+                        <li class="nav-item">
+                        <a href="./trajes.html" class="nav-link">Trajes</a>
+                        </li>
+
+                        <li class="nav-item">
+                        <a href="./contacto.html" class="nav-link">Contacto</a>
+                        </li>
+
+                    </ul>
+
+                  <div class="d-flex ms-auto gap-2">
+                    <button class="btn btn-secondary"><i class="bi bi-cart-dash-fill"></i></button>
+                    <button class="btn btn-danger"><i class="bi bi-box-arrow-left"></i></button>
+                    </div>
+
+               </div>
+             </div>
+        </nav>     
+
+    <div class="titulo"> <h4>CAMISAS - 100% ALGODON - ALTA CALIDAD</h4></div>
+
+    <main>
+     <div class="container-fluid">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 my-5 mx-2">
+            
+            <div class="col">
+                <div class="card">
+                <img src="/styles/img/TrajedeVestir.webp" alt="Traje de vestir">
+                <div class="card-body">
+                    <h5 class="card-title">Traje de vestir</h5>
+                    <p class="card-text">Traje de vestir clásico en color azul marino. Alta calidad.</p>
+                </div>
+                    
+            
+                <div class="card-footer">
+                    <div class="row-text-center">  
+                        <div class="col">
+                        <p class="price"> $250.000</p>
+                        </div>
+
+                        <div class="col">
+                        <input type="number" class="form-control" min="0" max="50"  placeholder="0">
+                        </div>
+                        <button class="btn btn-success w-100 mt-3">
+                        <i class="bi bi-cart-plus"></i> Agregar al carrito
+                        </button>
+
+                    </div>
+                    
+                    
+                </div>
+            </div>    
+            </div>  
+
+
+            <div class="col">
+                <div class="card">
+                <img src="/styles/img/TrajedeVestir.webp" alt="Traje de vestir">
+                <div class="card-body">
+                    <h5 class="card-title">Traje de vestir</h5>
+                    <p class="card-text">Traje de vestir clásico en color azul marino. Alta calidad.</p>
+                </div>
+                    
+            
+                <div class="card-footer">
+                    <div class="row-text-center">  
+                        <div class="col">
+                        <p class="price"> $250.000</p>
+                        </div>
+
+                        <div class="col">
+                        <input type="number" class="form-control" min="0" max="50"  placeholder="0">
+                        </div>
+                        <button class="btn btn-success w-100 mt-3">
+                        <i class="bi bi-cart-plus"></i> Agregar al carrito
+                        </button>                    
+                    </div>
+                    
+                    
+                </div>
+            </div>    
+            </div>  
+
+
+
+            <div class="col">
+                <div class="card">
+                <img src="/styles/img/TrajedeVestir.webp" alt="Traje de vestir">
+                <div class="card-body">
+                    <h5 class="card-title">Traje de vestir</h5>
+                    <p class="card-text">Traje de vestir clásico en color azul marino. Alta calidad.</p>
+                </div>
+                    
+            
+                <div class="card-footer">
+                    <div class="row-text-center">  
+                        <div class="col">
+                        <p class="price"> $250.000</p>
+                        </div>
+
+                        <div class="col">
+                        <input type="number" class="form-control" min="0" max="50"  placeholder="0">
+                        <button class="btn btn-success w-100 mt-3">
+                        <i class="bi bi-cart-plus"></i> Agregar al carrito
+                        </button>
+
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>    
+            </div>  
+
+
+            <div class="col">
+                <div class="card">
+                <img src="/styles/img/TrajedeVestir.webp" alt="Traje de vestir">
+                <div class="card-body">
+                    <h5 class="card-title">Traje de vestir</h5>
+                    <p class="card-text">Traje de vestir clásico en color azul marino. Alta calidad.</p>
+                </div>
+                    
+            
+                <div class="card-footer">
+                    <div class="row-text-center">  
+                        <div class="col">
+                        <p class="price"> $250.000</p>
+                        </div>
+
+                        <div class="col">
+                        <input type="number" class="form-control" min="0" max="50"  placeholder="0">
+                        </div>
+                        <button class="btn btn-success w-100 mt-3">
+                        <i class="bi bi-cart-plus"></i> Agregar al carrito
+                        </button>
+
+                    </div>
+                    
+                    
+                </div>
+            </div>    
+            </div>  
+
+
+            <div class="col">
+                <div class="card">
+                <img src="/styles/img/TrajedeVestir.webp" alt="Traje de vestir">
+                <div class="card-body">
+                    <h5 class="card-title">Traje de vestir</h5>
+                    <p class="card-text">Traje de vestir clásico en color azul marino. Alta calidad.</p>
+                </div>
+                    
+            
+                <div class="card-footer">
+                    <div class="row-text-center">  
+                        <div class="col">
+                        <p class="price"> $250.000</p>
+                        </div>
+
+                        <div class="col">
+                        <input type="number" class="form-control" min="0" max="50"  placeholder="0">
+                        </div>
+                        <button class="btn btn-success w-100 mt-3">
+                        <i class="bi bi-cart-plus"></i> Agregar al carrito
+                        </button>
+
+                    </div>
+                    
+                    
+                </div>
+            </div>    
+            </div>  
+
+
+            <div class="col">
+                <div class="card">
+                <img src="/styles/img/TrajedeVestir.webp" alt="Traje de vestir">
+                <div class="card-body">
+                    <h5 class="card-title">Traje de vestir</h5>
+                    <p class="card-text">Traje de vestir clásico en color azul marino. Alta calidad.</p>
+                </div>
+                    
+            
+                <div class="card-footer">
+                    <div class="row-text-center">  
+                        <div class="col">
+                        <p class="price"> $250.000</p>
+                        </div>
+
+                        <div class="col">
+                        <input type="number" class="form-control" min="0" max="50"  placeholder="0">
+                        </div>
+                        <button class="btn btn-success w-100 mt-3">
+                        <i class="bi bi-cart-plus"></i> Agregar al carrito
+                        </button>
+
+                    </div>
+                    
+                    
+                </div>
+            </div>    
+            </div>  
+
+            <div class="col">
+                <div class="card">
+                <img src="/styles/img/TrajedeVestir.webp" alt="Traje de vestir">
+                <div class="card-body">
+                    <h5 class="card-title">Traje de vestir</h5>
+                    <p class="card-text">Traje de vestir clásico en color azul marino. Alta calidad.</p>
+                </div>
+                    
+            
+                <div class="card-footer">
+                    <div class="row-text-center">  
+                        <div class="col">
+                        <p class="price"> $250.000</p>
+                        </div>
+
+                        <div class="col">
+                        <input type="number" class="form-control" min="0" max="50"  placeholder="0">
+                        </div>
+                        <button class="btn btn-success w-100 mt-3">
+                        <i class="bi bi-cart-plus"></i> Agregar al carrito
+                        </button>
+
+                    </div>
+                    
+                    
+                </div>
+            </div>    
+            </div>  
+
+        </div>     
+     </div>
+
+     <footer>
+     <p>© 2025 ZAMMOT - Todos los derechos reservados.</p>
+    </footer>
+    </main>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+       
+    </body>
 </html>

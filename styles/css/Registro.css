@@ -7,7 +7,7 @@ html, body {
   
 
 body {
-    background-image: url("zammot_bg.webp");
+    background-image: url("../img/zammot_bg.webp");
     background-repeat: no-repeat;
     background-position: center top; 
     background-size: cover;          
