@@ -7,39 +7,21 @@
   <link rel="icon" type="image/webp" href="../styles/img/zammot_bowtie.webp">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../styles/css/contacto.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
+
 <body data-bs-theme="dark">
 
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand">
-        <img src="../styles/img/zammot_bowtie.webp" alt="ZAMMOT Logo" class="logo"> ZAMMOT
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-collapse">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+  <div id="navbar"></div>
 
-      <div class="collapse navbar-collapse" id="navbar-collapse">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a href="./home.html" class="nav-link">Home</a></li>
-          <li class="nav-item"><a href="./camisas.html" class="nav-link">Camisas</a></li>
-          <li class="nav-item"><a href="./zapatos.html" class="nav-link">Zapatos</a></li>
-          <li class="nav-item"><a href="./trajes.html" class="nav-link">Trajes</a></li>
-          <li class="nav-item"><a href="./contacto.html" class="nav-link active">Contacto</a></li>
-        </ul>
-        <div class="d-flex ms-auto gap-2">
-          <button class="btn btn-secondary"><i class="bi bi-cart-dash-fill"></i></button>
-          <button class="btn btn-danger"><i class="bi bi-box-arrow-left"></i></button>
-        </div>
-      </div>
-    </div>
-  </nav>
+ 
+  <script src="../js/auth.js"></script>
+  <script>checkLogin();</script>
 
   <main class="container my-5">
     <h1 class="text-center mb-4">Contáctanos</h1>
     <div class="row g-4 justify-content-center">
 
-  
       <div class="col-12 col-md-6">
         <div class="card p-4 shadow-lg bg-dark text-light">
           <h4 class="mb-3">Envíanos tu consulta</h4>
@@ -48,20 +30,22 @@
               <label class="form-label">Nombre y Apellido</label>
               <input type="text" class="form-control" placeholder="Ej: Juan Pérez" required>
             </div>
+
             <div class="mb-3">
               <label class="form-label">Correo electrónico</label>
               <input type="email" class="form-control" placeholder="Ej: juanperez@gmail.com" required>
             </div>
+
             <div class="mb-3">
               <label class="form-label">Mensaje</label>
               <textarea class="form-control" rows="4" placeholder="Escribí tu mensaje..." required></textarea>
             </div>
+
             <button type="submit" class="btn btn-success w-100">Enviar mensaje</button>
           </form>
         </div>
       </div>
 
- 
       <div class="col-12 col-md-5">
         <div class="card p-4 shadow-lg bg-dark text-light">
           <h4 class="mb-3">Información de contacto</h4>
@@ -69,8 +53,11 @@
           <p><i class="bi bi-telephone-fill text-success"></i> Teléfono: (0351) 458-1234</p>
           <p><i class="bi bi-envelope-fill text-success"></i> Email: contacto@zammot.com.ar</p>
           <p><i class="bi bi-clock-fill text-success"></i> Horario: Lunes a Sábados de 9:00 a 20:00 hs</p>
+
           <hr>
+
           <h5 class="text-center">Seguinos en redes</h5>
+
           <div class="d-flex justify-content-center gap-3 fs-4 mt-3">
             <a href="#" class="text-success"><i class="bi bi-facebook"></i></a>
             <a href="#" class="text-success"><i class="bi bi-instagram"></i></a>
@@ -78,14 +65,24 @@
           </div>
         </div>
       </div>
+
     </div>
   </main>
-
 
   <footer class="text-center py-4 mt-5 bg-dark text-secondary">
     <p>© 2025 ZAMMOT - Córdoba, Argentina</p>
   </footer>
 
+  <script src="../js/dataPages.js"></script>
+  <script src="../js/navbar.js"></script>
+  <script src="../js/auth.js"></script>
+
+    <script src="../js/dataProducts.js"></script>
+    <script src="../js/cards.js"></script>
+    <script src="../js/renderProducts.js"></script>
+  <script>renderNavbar();</script>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
