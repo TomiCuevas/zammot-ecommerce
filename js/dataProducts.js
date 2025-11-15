@@ -168,7 +168,7 @@ const products = [
 },
 
 {
-    id: "d5",
+    id: "d6",
     title: "Traje Rojo Premium",
     description: "Tejido francés, calidad superior.",
     price: 300000,
