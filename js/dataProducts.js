@@ -46,7 +46,7 @@ const products = [
         title: "Traje Negro Clásico",
         description: "Ideal para eventos formales.",
         price: 250000,
-        img: "../styles/img/trajes/TrajedeVestir.webp",
+        img: "../styles/img/trajes/TrajeDeVestir.webp",
         category: "trajes"
     },
     {
