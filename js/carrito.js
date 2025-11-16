@@ -5,23 +5,18 @@ function saveCart() {
     localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-// Leer carrito desde localStorage
 function loadCart() {
     return JSON.parse(localStorage.getItem("cart")) || [];
 }
-
 function clearCart() {
     cart = [];
     saveCart();
 }
 
-
-
-
+// AGREGAR PRODUCTO AL CARRITO
 function addToCart(productId, qty = 1) {
 
     if (qty < 1) qty = 1;
-
 
     const item = cart.find(p => p.id === productId);
 
@@ -39,9 +34,6 @@ function addToCart(productId, qty = 1) {
 
     return cart;
 }
-
-
-
 function updateCartCount() {
     const cart = loadCart();
 
@@ -55,7 +47,6 @@ function updateCartCount() {
 }
 
 
-// Asegurar carga de navbar
 if (typeof window.updateCartCount === "undefined") {
     window.updateCartCount = updateCartCount;
 }
