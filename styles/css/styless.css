@@ -3,7 +3,6 @@
   width: auto;
 }
 
-/* Logo dentro del navbar (más chico) */
 .navbar-brand .logo {
   height: 28px;
   width: auto;
@@ -11,37 +10,42 @@
   vertical-align: middle;
 }
 
-.banner-container{
-  width: 100%;              /* evita scroll horizontal por 100vw */
+
+
+.banner-container {
+  width: 100%;
   max-width: 100vw;
   height: 30vw;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  position: relative;   
+  position: relative;
 }
 
-.banner-container img{
+.banner-container img {
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
   object-position: 50% 45%;
-  transition: transform .4s ease;   /* ANIMACIÓN EN EL MISMO ELEMENTO */
+  transition: transform 0.4s ease;
   transform-origin: center;
   will-change: transform;
 }
 
-/* Zoom al pasar el mouse */
-.banner-container:hover img{
+.banner-container:hover img {
   transform: scale(1.02);
 }
 
-@media (max-width: 600px){
-  .banner-container{ height: 35vw; }
+@media (max-width: 600px) {
+  .banner-container { 
+    height: 35vw; 
+  }
 }
 
-/*Sections (arriba/abajo)*/
+
+/*SECCIONES PROMO / QUALITY*/
+
 .promo-section {
   background-color: rgba(255, 255, 255, 0.10);
   backdrop-filter: blur(4px);
@@ -59,4 +63,7 @@
   letter-spacing: 0.5px;
   border-top: 1px solid rgba(255, 255, 255, 0.10);
 }
-  
+
+.qty-box {
+  margin-bottom: 12px;
+}
