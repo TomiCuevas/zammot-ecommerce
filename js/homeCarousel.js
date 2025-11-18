@@ -1,4 +1,3 @@
-// CARRUSEL HORIZONTAL
 document.addEventListener("DOMContentLoaded", () => {
     if (PRODUCTS_CACHE.length === 0) {
         loadProducts().then(buildHorizontalCarousel);

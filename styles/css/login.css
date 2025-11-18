@@ -11,7 +11,6 @@ body {
   justify-content: center;
 }
 
-/* Contenedor general: logo + login centrados */
 .login-wrapper {
   display: flex;
   align-items: center;
@@ -20,7 +19,7 @@ body {
   padding: 40px;
 }
 
-/* --- Logo (izquierda) --- */
+
 .brand-card {
   display: flex;
   align-items: center;

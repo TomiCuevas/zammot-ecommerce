@@ -3,7 +3,6 @@
   width: auto;
 }
 
-/* Logo dentro del navbar (más chico) */
 .navbar-brand .logo {
   height: 28px;
   width: auto;
@@ -19,14 +18,10 @@
   color: #697d91;
 }
 
-
-
-/*UNIFICACIÓN Y ALINEADO DE CARDS*/
-
 .product-img {
   width: 100%;
-  aspect-ratio: 4 / 5;        /* Mantiene proporción PERFECTA */
-  object-fit: cover;          /* Recorta sin perder calidad */
+  aspect-ratio: 4 / 5;     
+  object-fit: cover;         
   object-position: center;
   display: block;
   border-bottom: 1px solid rgba(0,0,0,0.1);
