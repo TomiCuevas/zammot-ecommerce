@@ -1,4 +1,4 @@
-html, body {
+html, body { 
     height: 100%;
     margin: 0;
     font-family: Arial, sans-serif;
@@ -93,12 +93,36 @@ form a {
     min-width: 0;
 }
 
+
 .input-box input[type="date"] {
-    color: #fff;
+    color: #ffffff !important;
 }
-.input-box input[type="date"]::-webkit-datetime-edit,
+
+.input-box input[type="date"]::placeholder {
+    color: #ffffff !important;
+    opacity: 0.7;
+}
+
+.input-box input[type="date"]::-webkit-datetime-edit {
+    color: #ffffff !important;
+}
+
+
+.input-box input[type="date"]::-webkit-datetime-edit-month-field,
+.input-box input[type="date"]::-webkit-datetime-edit-day-field,
+.input-box input[type="date"]::-webkit-datetime-edit-year-field {
+    color: #ffffff !important;
+}
+
+.input-box input[type="date"]::-webkit-datetime-edit-text {
+    color: #ffffff !important;
+}
+
+
 .input-box input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
+    cursor: pointer;
+    opacity: 0.9;
 }
 
 .label-inline { display: none; }
