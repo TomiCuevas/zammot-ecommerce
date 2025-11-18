@@ -10,19 +10,20 @@
     <link rel="stylesheet" href="../styles/css/destacados.css">
     <link rel="stylesheet" href="../styles/css/styless.css">
 
-    <script src="../js/dataPages.js"></script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/navbar.js"></script>
-    <script src="../js/dataProducts.js"></script>
-    <script src="../js/carrito.js"></script>
-    <script src="../js/renderProducts.js"></script>
-
 </head>
 
 <body class="bg-dark text-light">
-
     <div id="navbar"></div>
-    <script>renderNavbar();</script>
+
+    <script src="../js/dataPages.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/navbar.js"></script>
+    <script src="../js/carrito.js"></script>
+    <script src="../js/renderProducts.js"></script>
+
+    <script>
+        renderNavbar();
+    </script>
 
     <div class="container my-5">
         <h2 class="text-center mb-4">PRODUCTOS DESTACADOS</h2>
@@ -39,6 +40,8 @@
     <script>
         renderProducts("destacados");
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

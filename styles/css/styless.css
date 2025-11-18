@@ -10,7 +10,7 @@
   vertical-align: middle;
 }
 
-
+/*BANNER*/
 
 .banner-container {
   width: 100%;
@@ -44,8 +44,6 @@
 }
 
 
-/*SECCIONES PROMO / QUALITY*/
-
 .promo-section {
   background-color: rgba(255, 255, 255, 0.10);
   backdrop-filter: blur(4px);
@@ -64,6 +62,73 @@
   border-top: 1px solid rgba(255, 255, 255, 0.10);
 }
 
+
+
+
 .qty-box {
   margin-bottom: 12px;
+}
+
+
+
+.horizontal-wrapper {
+  position: relative;
+  width: 100%;
+  padding: 20px 40px;
+}
+
+.horizontal-track {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+}
+
+.horizontal-track::-webkit-scrollbar {
+  display: none !important; 
+}
+
+.horizontal-track .card {
+  min-width: 18rem !important;
+  max-width: 18rem !important;
+  flex-shrink: 0;
+  border: none !important;            
+  box-shadow: none !important;       
+  background-color: transparent !important; 
+}
+
+
+.horizontal-track .card img {
+  border-radius: 12px;
+}
+
+
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 20;
+  font-size: 1.4rem;
+  width: 45px;
+  height: 45px;
+}
+
+.left-btn {
+  left: 0;
+}
+
+.right-btn {
+  right: 0;
+}
+
+.scroll-btn:hover {
+  background: rgba(255,255,255,0.6);
+  color: black;
 }
