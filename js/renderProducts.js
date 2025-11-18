@@ -85,6 +85,17 @@ function changeQty(id, amount) {
 
 
 function addProductToCart(id) {
+
+    //Validar si NO está logueado
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+    if (!isLoggedIn) {
+        alert("Debes iniciar sesión para agregar productos.");
+        window.location.href = "../index.html"; //redireccionar al login
+        return;
+    }
+
+  //si no seguir compo siempre
     const qtySpan = document.getElementById(`qty-${id}`);
     if (!qtySpan) return;
 
