@@ -1,70 +1,102 @@
-// =====================================
-// INICIAR SESIÓN
-// =====================================
+
+// OBTENER Y GUARDAR USUARIOS EN localStorage
+function getUsers() {
+    return JSON.parse(localStorage.getItem("users")) || [];
+}
+
+function saveUsers(users) {
+    localStorage.setItem("users", JSON.stringify(users));
+}
+
+// REGISTRAR USUARIO
+function registerUser(event) {
+    event.preventDefault();
+
+    const nombre = document.getElementById("reg-nombre")?.value.trim();
+    const apellido = document.getElementById("reg-apellido")?.value.trim();
+    const email = document.getElementById("reg-email")?.value.trim();
+    const password = document.getElementById("reg-pass")?.value.trim();
+    const fechaNac = document.getElementById("reg-fechaNac")?.value.trim();
+
+    if (!nombre || !apellido || !email || !password || !fechaNac) {
+        alert("Completa todos los campos.");
+        return;
+    }
+
+    const users = getUsers();
+
+    if (users.some(u => u.email === email)) {
+        alert("Este email ya está registrado.");
+        return;
+    }
+
+    users.push({
+        nombre,
+        apellido,
+        email,
+        password,
+        fechaNac
+    });
+
+    saveUsers(users);
+
+    alert("Registro exitoso. Ahora podés iniciar sesión.");
+    window.location.href = "../index.html";
+}
+
+// INICIAR SESIÓN 
 function loginUser(event) {
     event.preventDefault();
 
-    // Tomar valores del formulario
     const email = document.getElementById("email")?.value.trim();
     const password = document.getElementById("password")?.value.trim();
 
-    // Validación básica
     if (!email || !password) {
-        alert("Completa todos los campos");
+        alert("Completa todos los campos.");
         return;
     }
 
-    // --------------------------------------------------
-    // VALIDACIÓN DE USUARIO (MÍNIMA PERO NECESARIA)
-    // Esto evita que entre cualquiera como "logueado".
-    // --------------------------------------------------
-    const VALID_EMAIL = "admin@zammot.com";
-    const VALID_PASSWORD = "1234";
+    const users = getUsers();
 
-    if (email !== VALID_EMAIL || password !== VALID_PASSWORD) {
-        alert("Usuario o contraseña incorrectos");
+    // Buscar usuario con email y contraseña registrados que coincidan si o si
+    const user = users.find(
+        u => u.email === email && u.password === password
+    );
+
+    if (!user) {
+        alert("Email o contraseña incorrectos.");
         return;
     }
 
-    // Si pasó la validación → guardar datos reales del usuario
+    // Guarda la sesión en sessionStorage
     const userData = {
-        email: email,
+        email: user.email,
+        nombre: user.nombre,
+        apellido: user.apellido,
+        fechaNac: user.fechaNac,
         loginTime: new Date().toISOString()
     };
 
-    // Guardamos info en sessionStorage (punto 1 de la entrega 5)
     sessionStorage.setItem("loggedUser", JSON.stringify(userData));
 
-    // Flag para el navbar y navegación
+    //aca se avisa al navbar  de que no ingresó el tipo
     localStorage.setItem("isLoggedIn", "true");
-
-    // Redirigir al HOME completo
     window.location.href = "./pages/home.html";
 }
 
 
-// =====================================
 // CERRAR SESIÓN
-// =====================================
 function logoutUser() {
-    // borrar datos
     sessionStorage.removeItem("loggedUser");
     localStorage.removeItem("isLoggedIn");
 
-    // volver al login
     window.location.href = "../index.html";
 }
 
 
-// =====================================
 // INGRESAR SIN INICIAR SESIÓN
-// (HOME LIMITADO)
-// =====================================
 function visitWithoutLogin() {
-    // Asegurar que NO quede ninguna sesión activa
     sessionStorage.removeItem("loggedUser");
     localStorage.removeItem("isLoggedIn");
-
-    // Ir al home básico (sin login)
     window.location.href = "./pages/home.html";
 }

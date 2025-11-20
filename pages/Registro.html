@@ -3,24 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZAMMOT-Registro</title>
+    <title>ZAMMOT - Registro</title>
     <link rel="icon" type="image/webp" href="../styles/img/zammot_bowtie.webp">
     <link rel="stylesheet" href="../styles/css/Registro.css">
 </head>
+
 <body>
+
     <header>
         <div class="encabezado">
-          <img src="../styles/img/zammot_bowtie.webp" alt="ZAMMOT Logo" class="logo">
-      
-          <div>
-            <h1>ZAMMOT</h1>
-            <p class="slogan">Tus productos de confianza</p>
-          </div>
+            <img src="../styles/img/zammot_bowtie.webp" alt="ZAMMOT Logo" class="logo">
+            <div>
+                <h1>ZAMMOT</h1>
+                <p class="slogan">Tus productos de confianza</p>
+            </div>
         </div>
     </header>
 
     <div class="container">
         <h1>Registrarse</h1>
+
         <form id="registroForm">
 
             <div class="input-box">
@@ -41,7 +43,7 @@
 
             <div class="input-box small-box">
                 <label for="fechaNac" class="label-inline">Nacimiento</label>
-                <input id="fechaNac" name="fechaNac" type="date" required>
+                <input id="fechaNac" type="date" required>
             </div>
 
             <button type="submit" class="btn">Registrarse</button>
@@ -49,29 +51,52 @@
             <p class="IniciarSesion-link">
                 ¿Ya tienes una cuenta? <a href="../index.html">Iniciar sesión</a>
             </p>
+
         </form>
     </div>
 
-
-    
-        <!-- Correción de entrega 3-->
     <script>
-    const form = document.getElementById("registroForm");
+        const form = document.getElementById("registroForm");
 
-    form.addEventListener("submit", function (event) {
-        event.preventDefault(); 
-        if (!form.checkValidity()) {
-            form.reportValidity();
-            return;
-        }
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
 
-        alert("¡Registro exitoso! Ahora inicia sesión.");
-        
-        setTimeout(() => {
-            window.location.href = "../index.html";
-        }, 10);
-    });
-</script>
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            //se toman los datos
+            const nuevoUsuario = {
+                nombre: document.getElementById("nombre").value.trim(),
+                apellido: document.getElementById("apellido").value.trim(),
+                email: document.getElementById("email").value.trim().toLowerCase(),
+                password: document.getElementById("password").value.trim(),
+                fechaNac: document.getElementById("fechaNac").value
+            };
+
+            //Leer usuarios actuales
+            const users = JSON.parse(localStorage.getItem("users")) || [];
+
+            //Validar si el mail ya existe
+            const existe = users.some(u => u.email === nuevoUsuario.email);
+
+            if (existe) {
+                alert("Este email ya está registrado. Intenta iniciar sesión.");
+                return;
+            }
+
+            //Guardar usuario
+            users.push(nuevoUsuario);
+            localStorage.setItem("users", JSON.stringify(users));
+
+            alert("¡Registro exitoso! Ahora puedes iniciar sesión.");
+
+            setTimeout(() => {
+                window.location.href = "../index.html";
+            }, 300);
+        });
+    </script>
 
 </body>
 </html>

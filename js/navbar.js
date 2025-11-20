@@ -73,7 +73,7 @@ function renderNavbar() {
 
     document.getElementById("navbar").innerHTML = nav;
 
-    //Actualiza solo cuando DOM y funciones existen, distinto al requestAnimationFrame
+    //Actualiza solo cuando DOM y funciones existen, distinto al requestAnimationFrame que habia usado antes
     setTimeout(() => {
         if (typeof updateCartCount === "function") {
             updateCartCount();
