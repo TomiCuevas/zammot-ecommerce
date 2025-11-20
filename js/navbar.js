@@ -46,7 +46,6 @@ function renderNavbar() {
             `;
         });
 
-
         nav += `
             <li class="nav-item">
                 <a class="nav-link d-flex align-items-center gap-1" href="../pages/carrito.html">
@@ -74,9 +73,10 @@ function renderNavbar() {
 
     document.getElementById("navbar").innerHTML = nav;
 
-    requestAnimationFrame(() => {
+    //Actualiza solo cuando DOM y funciones existen, distinto al requestAnimationFrame
+    setTimeout(() => {
         if (typeof updateCartCount === "function") {
             updateCartCount();
         }
-    });
+    }, 0);
 }
