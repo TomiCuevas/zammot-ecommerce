@@ -45,7 +45,7 @@
         </div>
 
     </div>
-    <!-- ventana flotante-->
+
     <div class="modal fade" id="modalProducto" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content text-dark">
@@ -73,7 +73,6 @@
 
 <script>
 
-//bloquear a intrusos agregar en el carro
 document.addEventListener("DOMContentLoaded", () => {
     const user = sessionStorage.getItem("loggedUser");
     if (!user) {
@@ -110,7 +109,27 @@ function renderCart() {
     const container = document.getElementById("cart-items");
 
     if (cart.length === 0) {
-        container.innerHTML = "<p>No hay productos en el carrito.</p>";
+
+        container.innerHTML = `
+            <div class="text-center p-5 bg-secondary rounded-4 shadow-lg"
+                 style="background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);">
+                
+                <div class="mb-3">
+                    <i class="bi bi-cart-x-fill" style="font-size: 4rem; color:#bbb;"></i>
+                </div>
+
+                <h4 class="text-light mb-2">Tu carrito está vacío</h4>
+                <p class="text-secondary mb-4">
+                    Agregá productos y aparecerán aquí 
+                </p>
+
+                <a href="./destacados.html" 
+                   class="btn btn-outline-light px-4 py-2 rounded-pill">
+                    Ver productos destacados
+                </a>
+            </div>
+        `;
+
         document.getElementById("cart-total").textContent = 0;
         return;
     }
@@ -142,7 +161,6 @@ function renderCart() {
 
                 <div class="d-flex gap-4 align-items-center">
 
-                    <!-- IMAGEN GRANDE -->
                     <img src="${product.img}" 
                          alt="${product.title}" 
                          class="rounded shadow"
@@ -152,13 +170,11 @@ function renderCart() {
 
                         <h5 class="mb-1">${product.title}</h5>
 
-                        <!-- BOTÓN VER PRODUCTO -->
                         <button class="btn btn-outline-info btn-sm mb-3"
                                 onclick="verProducto('${product.id}')">
                             <i class="bi bi-eye"></i> Ver producto
                         </button>
 
-                        <!-- CONTADOR -->
                         <div class="d-flex align-items-center gap-3 my-2">
                             <button class="btn btn-sm btn-light" onclick="updateQty('${product.id}', -1)">−</button>
                             <span class="fs-5">${qty}</span>
@@ -169,7 +185,6 @@ function renderCart() {
                         <h6 class="mt-1">Subtotal: $${subtotal}</h6>
                     </div>
 
-                    <!-- ELIMINAR -->
                     <button class="btn btn-danger btn-sm"
                             onclick="removeFromCart('${product.id}')">
                         <i class="bi bi-trash"></i>

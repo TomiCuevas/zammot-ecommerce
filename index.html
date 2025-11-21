@@ -47,6 +47,7 @@
                     <a href="./pages/Registro.html">Regístrate</a>
                 </p>
             </form>
+
             <div class="text-center my-3">
                 <span class="text-white-50">──────────  o  ──────────</span>
             </div>
@@ -64,10 +65,10 @@
 
     <script src="./js/auth.js"></script>
 
-
-    <!--boton oculto para borrar usuarios registrados nomas-->
+    
+    <!--boton oculto para borar localstorage-->
     <button id="debug-clear-storage" 
-        onclick="clearRegisteredUsers()" 
+        onclick="clearAllStorage()" 
         style="display:none; position:fixed; bottom:15px; right:15px; 
                padding:10px 14px; background:#dc3545; color:white; 
                border:none; border-radius:8px; z-index:9999;
@@ -76,18 +77,20 @@
     </button>
 
     <script>
+        // Mostrar/Ocultar botón con CTRL + SHIFT + L
         document.addEventListener("keydown", function(e) {
             if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "l") {
                 const btn = document.getElementById("debug-clear-storage");
                 btn.style.display = btn.style.display === "none" ? "block" : "none";
             }
         });
+        
+        function clearAllStorage() {
+            if (confirm("¿Seguro que deseas borrar TODO el localStorage?")) {
 
-        //borra solo los usuarios registrados
-        function clearRegisteredUsers() {
-            if (confirm("¿Seguro que deseas borrar SOLO los usuarios registrados?")) {
-                localStorage.removeItem("users");
-                alert("Usuarios eliminados correctamente.");
+                localStorage.clear();
+
+                alert("Se borró TODO el localStorage correctamente.");
             }
         }
     </script>
