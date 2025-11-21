@@ -1,5 +1,4 @@
-
-// traer usuarios y guardarlos en el localStorage
+// traer usuarios y guardarlos en el localStorage 
 function getUsers() {
     return JSON.parse(localStorage.getItem("users")) || [];
 }
@@ -10,18 +9,29 @@ function saveUsers(users) {
 function getLoggedUser() {
     return JSON.parse(sessionStorage.getItem("loggedUser")) || null;
 }
-//REGISTRAR USUARIO
+
+//que en el nombre y el apellido la primera letra sea mayuscula y las demas minusculas
+function capitalize(text) {
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+}
+
 function registerUser(event) {
     event.preventDefault();
 
-    const nombre = document.getElementById("reg-nombre")?.value.trim();
-    const apellido = document.getElementById("reg-apellido")?.value.trim();
-    const email = document.getElementById("reg-email")?.value.trim();
+    const nombre = capitalize(document.getElementById("reg-nombre")?.value.trim());   // 🔥 Capitalizado
+    const apellido = capitalize(document.getElementById("reg-apellido")?.value.trim()); // 🔥 Capitalizado
+    const email = document.getElementById("reg-email")?.value.trim(); // ❌ YA NO SE PASA A minúsculas
     const password = document.getElementById("reg-pass")?.value.trim();
     const fechaNac = document.getElementById("reg-fechaNac")?.value.trim();
 
     if (!nombre || !apellido || !email || !password || !fechaNac) {
         alert("Completa todos los campos.");
+        return;
+    }
+
+    const emailRegex = /^[^\s@]+@(gmail|hotmail|outlook|yahoo|icloud)\.(com|com\.ar)$/i;
+    if (!emailRegex.test(email)) {
+        alert("El email debe ser gmail, hotmail, outlook, yahoo o icloud y terminar en .com o .com.ar");
         return;
     }
 
@@ -97,4 +107,42 @@ function visitWithoutLogin() {
     localStorage.removeItem("isLoggedIn");
 
     window.location.href = "./pages/home.html";
+}
+
+
+function openForgotModal() {
+    const modal = document.getElementById("forgotModal");
+    if (modal) modal.style.display = "flex";
+}
+
+function closeForgotModal() {
+    const modal = document.getElementById("forgotModal");
+    const emailInput = document.getElementById("forgotEmail");
+
+    if (emailInput) emailInput.value = "";
+
+    if (modal) modal.style.display = "none";
+}
+
+function sendRecoveryEmail() {
+    const emailInput = document.getElementById("forgotEmail");
+    if (!emailInput) return;
+
+    const email = emailInput.value.trim();
+    if (!email) {
+        alert("Por favor ingresá un email.");
+        return;
+    }
+
+    const users = getUsers();
+    const user = users.find(u => u.email === email);
+
+    if (!user) {
+        alert("No existe una cuenta registrada con ese email.");
+        return;
+    }
+
+    alert(`Se ha enviado un correo de recuperación a: ${email}`);
+
+    closeForgotModal();
 }

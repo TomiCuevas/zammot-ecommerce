@@ -36,7 +36,9 @@ function renderProducts(category) {
     }
 
     container.innerHTML = filtered.map(renderProductCard).join("");
+    filtered.forEach(p => updateWishlistIcon(p.id));
 }
+
 
 function renderProductCard(product) {
     return `
@@ -46,16 +48,26 @@ function renderProductCard(product) {
 
         <div class="card-body d-flex flex-column">
 
-            <h5 class="card-title">${product.title}</h5>
+            <h5 class="card-title d-flex justify-content-between align-items-center">
+                ${product.title}
+
+                <!-- FAVORITOS -->
+                <button 
+                    class="btn btn-light btn-sm" 
+                    id="fav-${product.id}"
+                    onclick="toggleFavorite('${product.id}')">
+                    <i class="bi bi-heart"></i>
+                </button>
+            </h5>
 
             <p class="card-text flex-grow-1">${product.description}</p>
 
             <h6 class="fw-bold">$${product.price}</h6>
 
-            <!-- CONTADOR UNIFICADO COLOR GRIS -->
+            <!-- CONTADOR -->
             <style>
                 .qty-btn {
-                    background-color: #6c757d !important; /* gris elegante */
+                    background-color: #6c757d !important;
                     color: white !important;
                     border: none !important;
                     width: 32px;
@@ -67,7 +79,7 @@ function renderProductCard(product) {
                     transition: 0.2s ease-in-out;
                 }
                 .qty-btn:hover {
-                    background-color: #5a6268 !important; /* gris más oscuro */
+                    background-color: #5a6268 !important;
                     transform: scale(1.05);
                 }
             </style>

@@ -1,4 +1,4 @@
-function renderNavbar() {
+function renderNavbar() { 
 
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     const loggedUser = JSON.parse(sessionStorage.getItem("loggedUser"));
@@ -61,6 +61,16 @@ function renderNavbar() {
             `;
         });
 
+        //favoritos
+        nav += `
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-1" href="../pages/favoritos.html">
+                    <i class="bi bi-heart-fill"></i>
+                    <span id="wishlist-count" class="badge bg-danger rounded-pill">0</span>
+                </a>
+            </li>
+        `;
+
         // Carrito
         nav += `
             <li class="nav-item">
@@ -93,6 +103,11 @@ function renderNavbar() {
     setTimeout(() => {
         if (loggedUser && typeof updateCartCount === "function") {
             updateCartCount();
+        }
+
+        // ⭐ Actualiza el contador del wishlist
+        if (typeof updateWishlistCount === "function") {
+            updateWishlistCount();
         }
     }, 0);
 }

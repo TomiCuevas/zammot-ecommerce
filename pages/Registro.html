@@ -41,11 +41,11 @@
             </div>
 
             <div class="input-box small-box">
-                <label for="reg-fechaNac" class="label-inline">Nacimiento</label>
+                <label for="reg-fechaNac" class="label-inline"></label>
                 <input id="reg-fechaNac" type="date" required>
             </div>
 
-            <button type="submit" class="btn">Registrarse</button>
+            <button type="submit" class="btn btn-registrarse">Registrarse</button>
 
             <p class="IniciarSesion-link">
                 ¿Ya tienes una cuenta? <a href="../index.html">Iniciar sesión</a>
@@ -55,6 +55,21 @@
     </div>
 
     <script src="../js/auth.js"></script>
+
+    <!-- minusculas autoamticas-->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const emailInput = document.getElementById("reg-email");
+
+            if (emailInput) {
+                emailInput.addEventListener("input", () => {
+
+                    // Forzar minúsculas
+                    emailInput.value = emailInput.value.toLowerCase();
+                });
+            }
+        });
+    </script>
 
 </body>
 </html>
