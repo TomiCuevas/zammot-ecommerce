@@ -1,5 +1,5 @@
 
-// OBTENER Y GUARDAR USUARIOS EN localStorage
+// traer usuarios y guardarlos en el localStorage
 function getUsers() {
     return JSON.parse(localStorage.getItem("users")) || [];
 }
@@ -7,8 +7,10 @@ function getUsers() {
 function saveUsers(users) {
     localStorage.setItem("users", JSON.stringify(users));
 }
-
-// REGISTRAR USUARIO
+function getLoggedUser() {
+    return JSON.parse(sessionStorage.getItem("loggedUser")) || null;
+}
+//REGISTRAR USUARIO
 function registerUser(event) {
     event.preventDefault();
 
@@ -44,7 +46,7 @@ function registerUser(event) {
     window.location.href = "../index.html";
 }
 
-// INICIAR SESIÓN 
+//Inicio de sesion
 function loginUser(event) {
     event.preventDefault();
 
@@ -58,7 +60,6 @@ function loginUser(event) {
 
     const users = getUsers();
 
-    // Buscar usuario con email y contraseña registrados que coincidan si o si
     const user = users.find(
         u => u.email === email && u.password === password
     );
@@ -68,7 +69,7 @@ function loginUser(event) {
         return;
     }
 
-    // Guarda la sesión en sessionStorage
+    //usuario en sessionStorage que se guarda
     const userData = {
         email: user.email,
         nombre: user.nombre,
@@ -78,14 +79,11 @@ function loginUser(event) {
     };
 
     sessionStorage.setItem("loggedUser", JSON.stringify(userData));
-
-    //aca se avisa al navbar  de que no ingresó el tipo
     localStorage.setItem("isLoggedIn", "true");
     window.location.href = "./pages/home.html";
 }
 
-
-// CERRAR SESIÓN
+//Cerrar sesion
 function logoutUser() {
     sessionStorage.removeItem("loggedUser");
     localStorage.removeItem("isLoggedIn");
@@ -93,10 +91,10 @@ function logoutUser() {
     window.location.href = "../index.html";
 }
 
-
-// INGRESAR SIN INICIAR SESIÓN
+//ingresar sin inicio 
 function visitWithoutLogin() {
     sessionStorage.removeItem("loggedUser");
     localStorage.removeItem("isLoggedIn");
+
     window.location.href = "./pages/home.html";
 }

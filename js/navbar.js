@@ -1,11 +1,12 @@
 function renderNavbar() {
 
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    const loggedUser = JSON.parse(sessionStorage.getItem("loggedUser"));
 
     let nav = `
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
         <a class="navbar-brand d-flex align-items-center" href="../pages/home.html">
-            <img src="/styles/img/zammot_bowtie.webp" height="40" class="me-2">
+            <img src="../styles/img/zammot_bowtie.webp" height="40" class="me-2"> 
             ZAMMOT
         </a>
 
@@ -17,7 +18,8 @@ function renderNavbar() {
             <ul class="navbar-nav ms-auto">
     `;
 
-    if (!isLoggedIn) {
+    //navbar para el intruso
+    if (!isLoggedIn || !loggedUser) {
 
         nav += `
             <li class="nav-item">
@@ -29,14 +31,27 @@ function renderNavbar() {
             <li class="nav-item">
                 <a class="nav-link" href="../pages/contacto.html">Contacto</a>
             </li>
+
+            <!-- Botón iniciar sesión -->
             <li class="nav-item">
                 <a class="nav-link d-flex align-items-center gap-1" href="../index.html">
                     <i class="bi bi-box-arrow-in-right"></i>
                 </a>
             </li>
         `;
+    }
 
-    } else {
+    // Navbar para usuario
+    else {
+
+        //saludo
+        const nombreMostrar = loggedUser.nombre?.split(" ")[0] || "Usuario";
+
+        nav += `
+            <li class="nav-item d-flex align-items-center me-3 text-white fw-light">
+                Hola, <span class="fw-bold ms-1">${nombreMostrar}</span>
+            </li>
+        `;
 
         pages.forEach(p => {
             nav += `
@@ -46,6 +61,7 @@ function renderNavbar() {
             `;
         });
 
+        // Carrito
         nav += `
             <li class="nav-item">
                 <a class="nav-link d-flex align-items-center gap-1" href="../pages/carrito.html">
@@ -55,6 +71,7 @@ function renderNavbar() {
             </li>
         `;
 
+        // Logout
         nav += `
             <li class="nav-item">
                 <a class="nav-link text-danger fw-bold d-flex align-items-center gap-1"
@@ -73,9 +90,8 @@ function renderNavbar() {
 
     document.getElementById("navbar").innerHTML = nav;
 
-    //Actualiza solo cuando DOM y funciones existen, distinto al requestAnimationFrame que habia usado antes
     setTimeout(() => {
-        if (typeof updateCartCount === "function") {
+        if (loggedUser && typeof updateCartCount === "function") {
             updateCartCount();
         }
     }, 0);

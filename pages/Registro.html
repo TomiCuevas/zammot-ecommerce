@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,28 +22,27 @@
 
     <div class="container">
         <h1>Registrarse</h1>
-
-        <form id="registroForm">
+        <form id="registroForm" onsubmit="registerUser(event)">
 
             <div class="input-box">
-                <input id="nombre" type="text" placeholder="Nombre" required>
+                <input id="reg-nombre" type="text" placeholder="Nombre" required>
             </div>
 
             <div class="input-box">
-                <input id="apellido" type="text" placeholder="Apellido" required>
+                <input id="reg-apellido" type="text" placeholder="Apellido" required>
             </div>
 
             <div class="input-box">
-                <input id="email" type="email" placeholder="Email" required>
+                <input id="reg-email" type="email" placeholder="Email" required>
             </div>
 
             <div class="input-box">
-                <input id="password" type="password" placeholder="Contraseña" required>
+                <input id="reg-pass" type="password" placeholder="Contraseña" required>
             </div>
 
             <div class="input-box small-box">
-                <label for="fechaNac" class="label-inline">Nacimiento</label>
-                <input id="fechaNac" type="date" required>
+                <label for="reg-fechaNac" class="label-inline">Nacimiento</label>
+                <input id="reg-fechaNac" type="date" required>
             </div>
 
             <button type="submit" class="btn">Registrarse</button>
@@ -55,48 +54,7 @@
         </form>
     </div>
 
-    <script>
-        const form = document.getElementById("registroForm");
-
-        form.addEventListener("submit", function (event) {
-            event.preventDefault();
-
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            //se toman los datos
-            const nuevoUsuario = {
-                nombre: document.getElementById("nombre").value.trim(),
-                apellido: document.getElementById("apellido").value.trim(),
-                email: document.getElementById("email").value.trim().toLowerCase(),
-                password: document.getElementById("password").value.trim(),
-                fechaNac: document.getElementById("fechaNac").value
-            };
-
-            //Leer usuarios actuales
-            const users = JSON.parse(localStorage.getItem("users")) || [];
-
-            //Validar si el mail ya existe
-            const existe = users.some(u => u.email === nuevoUsuario.email);
-
-            if (existe) {
-                alert("Este email ya está registrado. Intenta iniciar sesión.");
-                return;
-            }
-
-            //Guardar usuario
-            users.push(nuevoUsuario);
-            localStorage.setItem("users", JSON.stringify(users));
-
-            alert("¡Registro exitoso! Ahora puedes iniciar sesión.");
-
-            setTimeout(() => {
-                window.location.href = "../index.html";
-            }, 300);
-        });
-    </script>
+    <script src="../js/auth.js"></script>
 
 </body>
 </html>

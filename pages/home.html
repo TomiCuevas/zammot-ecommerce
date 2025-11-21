@@ -4,16 +4,18 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>ZAMMOT - HOME</title>
+
     <link rel="icon" type="image/webp" href="../styles/img/zammot_bowtie.webp">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../styles/css/styless.css">
 </head>
 
 <body data-bs-theme="dark">
-
     <div id="navbar"></div>
+
     <section class="promo-section text-center py-2">
         <h5>2x1 en Trajes</h5>
         <p class="mb-0">Solo por tiempo limitado</p>
@@ -23,16 +25,15 @@
         <img src="../styles/img/banner_zammot.webp" alt="Publicidad ZAMMOT" class="img-fluid rounded shadow">
     </div>
 
+
     <section class="quality-section text-center py-3">
         <h5>La mejor calidad y elegancia.</h5>
     </section>
 
     <div class="container my-5">
-
         <h2 class="text-center mb-4">Recomendados para ti</h2>
 
         <div class="horizontal-wrapper position-relative">
-
             <button class="scroll-btn left-btn">
                 <i class="bi bi-chevron-left"></i>
             </button>
@@ -42,16 +43,17 @@
             <button class="scroll-btn right-btn">
                 <i class="bi bi-chevron-right"></i>
             </button>
-
         </div>
-
     </div>
 
+    <!-- COMPRA PENDIENTE -->
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="card my-5">
-                    <div class="card-header">Tu compra pendiente <i class="bi bi-cart-dash-fill"></i></div>
+                    <div class="card-header">
+                        Tu compra pendiente <i class="bi bi-cart-dash-fill"></i>
+                    </div>
                     <div class="card-body" id="pendientes-container">
                         <p class="text-secondary">Cargando...</p>
                     </div>
@@ -60,6 +62,7 @@
         </div>
     </div>
 
+    <!-- NOTIFICACIONES
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
@@ -84,7 +87,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <footer>
         <p>© 2025 ZAMMOT - Todos los derechos reservados.</p>
@@ -99,6 +102,74 @@
 
     <script>
         renderNavbar();
+    </script>
+
+
+    <script>
+
+        function cargarPendientes() {
+
+            const user = JSON.parse(sessionStorage.getItem("loggedUser"));
+            const cont = document.getElementById("pendientes-container");
+
+            if (!user) {
+                cont.innerHTML = `<p class="text-secondary">Inicia sesión para ver tus compras pendientes.</p>`;
+                return;
+            }
+
+            const cart = loadCart();
+
+            if (cart.length === 0) {
+                cont.innerHTML = `<p class="text-secondary">No tienes compras pendientes.</p>`;
+                return;
+            }
+
+            if (PRODUCTS_CACHE.length === 0) {
+                loadProducts().then(cargarPendientes);
+                return;
+            }
+
+            let html = "";
+            let total = 0;
+
+            cart.forEach(item => {
+
+                const product = PRODUCTS_CACHE.find(p => p.id === item.id);
+                if (!product) return;
+
+                let qty = Math.floor(Number(item.qty));
+                if (!Number.isFinite(qty) || qty < 1) qty = 1;
+
+                let price = Number(product.price);
+                if (!Number.isFinite(price) || price < 0) price = 0;
+
+                let subtotal = qty * price;
+                total += subtotal;
+
+                html += `
+                    <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                        <div>
+                            <strong>${product.title}</strong><br>
+                            <span class="text-secondary">Cantidad: ${qty}</span>
+                        </div>
+                        <div class="text-end">
+                            <span>$${subtotal}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                <div class="mt-3 text-end">
+                    <h5>Total pendiente: $${total}</h5>
+                </div>
+            `;
+
+            cont.innerHTML = html;
+        }
+
+        document.addEventListener("DOMContentLoaded", cargarPendientes);
+
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,4 +1,4 @@
-let PRODUCTS_CACHE = []; // Se guardan los productos en memoria luego del fetch
+let PRODUCTS_CACHE = [];
 
 function loadProducts() {
     return fetch("../data/products.json")
@@ -15,7 +15,6 @@ function loadProducts() {
         });
 }
 
-
 function renderProducts(category) {
     const container = document.getElementById("product-list");
 
@@ -24,7 +23,6 @@ function renderProducts(category) {
         return;
     }
 
-    // Si los productos aún no están cargados, primero se hace fetch
     if (PRODUCTS_CACHE.length === 0) {
         loadProducts().then(() => renderProducts(category));
         return;
@@ -40,7 +38,6 @@ function renderProducts(category) {
     container.innerHTML = filtered.map(renderProductCard).join("");
 }
 
-
 function renderProductCard(product) {
     return `
     <div class="card m-3 shadow d-flex flex-column h-100 product-card" style="width: 18rem;">
@@ -55,10 +52,30 @@ function renderProductCard(product) {
 
             <h6 class="fw-bold">$${product.price}</h6>
 
+            <!-- CONTADOR UNIFICADO COLOR GRIS -->
+            <style>
+                .qty-btn {
+                    background-color: #6c757d !important; /* gris elegante */
+                    color: white !important;
+                    border: none !important;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 6px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: 0.2s ease-in-out;
+                }
+                .qty-btn:hover {
+                    background-color: #5a6268 !important; /* gris más oscuro */
+                    transform: scale(1.05);
+                }
+            </style>
+
             <div class="d-flex align-items-center mt-3 qty-box">
-                <button class="btn btn-secondary btn-sm" onclick="changeQty('${product.id}', -1)">-</button>
+                <button class="qty-btn" onclick="changeQty('${product.id}', -1)">-</button>
                 <span id="qty-${product.id}" class="mx-2">1</span>
-                <button class="btn btn-dark btn-sm" onclick="changeQty('${product.id}', 1)">+</button>
+                <button class="qty-btn" onclick="changeQty('${product.id}', 1)">+</button>
             </div>
 
             <button class="btn btn-primary w-100 mt-auto"
@@ -70,32 +87,26 @@ function renderProductCard(product) {
     </div>`;
 }
 
-
 function changeQty(id, amount) {
     const qtySpan = document.getElementById(`qty-${id}`);
     if (!qtySpan) return;
 
     let qty = parseInt(qtySpan.textContent) || 1;
-
     qty += amount;
     if (qty < 1) qty = 1;
 
     qtySpan.textContent = qty;
 }
 
-
 function addProductToCart(id) {
-
-    //Validar si NO está logueado
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
     if (!isLoggedIn) {
         alert("Debes iniciar sesión para agregar productos.");
-        window.location.href = "../index.html"; //redireccionar al login
+        window.location.href = "../index.html";
         return;
     }
 
-  //si no seguir compo siempre
     const qtySpan = document.getElementById(`qty-${id}`);
     if (!qtySpan) return;
 
