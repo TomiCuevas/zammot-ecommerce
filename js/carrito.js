@@ -85,7 +85,7 @@ function updateQty(productId, change) {
 
     let qty = Math.floor(Number(item.qty)) + change;
 
-    // No deja bajar de 1
+    // No dejar bajar de 1
     if (qty < 1) qty = 1;
 
     item.qty = qty;
