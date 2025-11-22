@@ -39,7 +39,6 @@ function renderProducts(category) {
     filtered.forEach(p => updateWishlistIcon(p.id));
 }
 
-
 function renderProductCard(product) {
     return `
     <div class="card m-3 shadow d-flex flex-column h-100 product-card" style="width: 18rem;">
@@ -111,26 +110,18 @@ function changeQty(id, amount) {
 }
 
 function addProductToCart(id) {
-    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-
-    if (!isLoggedIn) {
-        alert("Debes iniciar sesión para agregar productos.");
-        window.location.href = "../index.html";
-        return;
-    }
 
     const qtySpan = document.getElementById(`qty-${id}`);
     if (!qtySpan) return;
 
     const qty = parseInt(qtySpan.textContent) || 1;
 
+    // el login se maneja desde addToCart()
     if (typeof window.addToCart === "function") {
         window.addToCart(id, qty);
     } else {
         console.error("ERROR: No existe addToCart() desde carrito.js");
-        alert("No se pudo agregar al carrito. Intenta recargar la página.");
         return;
     }
 
-    alert("Producto agregado al carrito.");
 }

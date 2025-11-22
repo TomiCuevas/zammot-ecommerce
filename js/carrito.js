@@ -1,22 +1,20 @@
-//traer mail del logueado
+//trae clave unica del carrito segun usuario logueado
 function getCartKey() {
     const user = JSON.parse(sessionStorage.getItem("loggedUser"));
     if (!user) return null;
-    //un carrito x usuario
-    return "cart_" + user.email;
+    return "cart_" + user.email; // un carrito por usuario
 }
+
 
 function loadCart() {
     const key = getCartKey();
-
-    if (!key) return []; //carrito vacío para el intruso
+    if (!key) return []; // si no hay user, carrito vacío
 
     const stored = JSON.parse(localStorage.getItem(key)) || [];
-    //Correción de profe de "NaN"
+
     return stored.map(item => {
         let qty = Math.floor(Number(item.qty));
         if (!Number.isFinite(qty) || qty < 1) qty = 1;
-
         return { id: item.id, qty };
     });
 }
@@ -24,22 +22,20 @@ function loadCart() {
 function saveCart(cart) {
     const key = getCartKey();
     if (!key) return;
-
     localStorage.setItem(key, JSON.stringify(cart));
 }
 
+
 function clearCart() {
-    saveCart([]); 
+    saveCart([]);
     updateCartCount();
 }
 
 function addToCart(productId, qty = 1) {
 
-    const user = JSON.parse(sessionStorage.getItem("loggedUser"));
-
+    const user = JSON.parse(sessionStorage.getItem("loggedUser"))
     if (!user) {
-        alert("Debes iniciar sesión para agregar productos.");
-        window.location.href = "../index.html";
+        showCartLoginModal();
         return;
     }
 
@@ -47,13 +43,11 @@ function addToCart(productId, qty = 1) {
     if (!Number.isFinite(qty) || qty < 1) qty = 1;
 
     let cart = loadCart();
-
     const item = cart.find(p => p.id === productId);
 
     if (item) {
         let currentQty = Math.floor(Number(item.qty));
         if (!Number.isFinite(currentQty) || currentQty < 1) currentQty = 1;
-
         item.qty = currentQty + qty;
     } else {
         cart.push({ id: productId, qty });
@@ -61,12 +55,14 @@ function addToCart(productId, qty = 1) {
 
     saveCart(cart);
     updateCartCount();
+
+    //aviso producto agregado
+    showAddedToast();
 }
 
 
 function removeFromCart(productId) {
     let cart = loadCart();
-
     cart = cart.filter(item => item.id !== productId);
 
     saveCart(cart);
@@ -75,17 +71,13 @@ function removeFromCart(productId) {
     if (typeof renderCart === "function") renderCart();
 }
 
-
 function updateQty(productId, change) {
 
     let cart = loadCart();
     const item = cart.find(p => p.id === productId);
-
     if (!item) return;
 
     let qty = Math.floor(Number(item.qty)) + change;
-
-    // No dejar bajar de 1
     if (qty < 1) qty = 1;
 
     item.qty = qty;
@@ -95,7 +87,6 @@ function updateQty(productId, change) {
 
     if (typeof renderCart === "function") renderCart();
 }
-
 
 function updateCartCount() {
     const cart = loadCart();
@@ -113,7 +104,7 @@ function updateCartCount() {
 
 window.updateCartCount = updateCartCount;
 
-//adaptacion a celulares del "ver producto"
+//adaptacion a celus
 function openProductModal(product, cartItemQty) {
 
     const modalBody = document.getElementById("modal-body");
@@ -123,17 +114,12 @@ function openProductModal(product, cartItemQty) {
 
     modalBody.innerHTML = `
         <div class="container-fluid">
-
             <div class="row align-items-center">
 
-                <!-- IMG -->
                 <div class="col-12 col-md-6 mb-3">
-                    <img src="${product.img}"
-                        class="img-fluid rounded shadow-sm w-100"
-                        alt="${product.title}">
+                    <img src="${product.img}" class="img-fluid rounded shadow-sm w-100" alt="${product.title}">
                 </div>
 
-                <!-- INFO -->
                 <div class="col-12 col-md-6">
                     <p>${product.description}</p>
                     <p><strong>Precio:</strong> $${product.price}</p>
@@ -144,4 +130,192 @@ function openProductModal(product, cartItemQty) {
             </div>
         </div>
     `;
+}
+
+//esto es para los intrusos...tienen que loguearse
+function showCartLoginModal() {
+    const modal = document.createElement("div");
+
+    modal.id = "cartLoginModal";
+    modal.style = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.65); backdrop-filter: blur(6px);
+        display: flex; justify-content: center; align-items: center;
+        z-index: 999999;
+    `;
+
+    modal.innerHTML = `
+        <div style="
+            background: rgba(20,20,20,0.85);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 25px; border-radius: 16px;
+            width: 90%; max-width: 360px;
+            color: white; text-align: center;
+            animation: fadeInCart .25s ease-out;
+        ">
+            <h4 class="mb-3">Inicia sesión para continuar</h4>
+
+            <p class="text-white-50 mb-4">
+                Para agregar productos al carrito debes iniciar sesión.
+            </p>
+
+            <button onclick="window.location.href='../index.html'"
+                style="
+                    width: 100%; padding: 12px;
+                    border: none; border-radius: 10px;
+                    background: #0d6efd; color: white;
+                    font-weight: 600; margin-bottom: 10px;
+                ">
+                Iniciar sesión
+            </button>
+
+            <button onclick="document.getElementById('cartLoginModal').remove()"
+                style="
+                    width: 100%; padding: 10px;
+                    border: none; border-radius: 10px;
+                    background: #6c757d; color: white;
+                    font-weight: 500;
+                ">
+                Cancelar
+            </button>
+        </div>
+
+        <style>
+        @keyframes fadeInCart {
+            from { opacity: 0; transform: scale(.95); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        </style>
+    `;
+
+    document.body.appendChild(modal);
+}
+
+//confirmar si vaciamos carrito
+function showClearCartModal() {
+    const existing = document.getElementById("clearCartModal");
+    if (existing) existing.remove();
+
+    const modal = document.createElement("div");
+    modal.id = "clearCartModal";
+
+    modal.style = `
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.65);
+        backdrop-filter: blur(6px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999999;
+    `;
+
+    modal.innerHTML = `
+        <div style="
+            background: rgba(20,20,20,0.90);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 25px;
+            border-radius: 16px;
+            width: 90%; max-width: 360px;
+            color: white;
+            text-align: center;
+            animation: fadeInClear .25s ease-out;
+        ">
+            <h4 class="mb-3">Vaciar carrito</h4>
+
+            <p class="text-white-50 mb-4">
+                ¿Estás seguro de que querés vaciar todo el carrito?<br>
+                <small>(No podrás deshacer esta acción)</small>
+            </p>
+
+            <button onclick="confirmClearCart()"
+                style="
+                    width: 100%; padding: 12px;
+                    border: none; border-radius: 10px;
+                    background: #dc3545;
+                    color: white; font-weight: 600;
+                    margin-bottom: 10px;
+                ">
+                Vaciar carrito
+            </button>
+
+            <button onclick="document.getElementById('clearCartModal').remove()"
+                style="
+                    width: 100%; padding: 10px;
+                    border: none; border-radius: 10px;
+                    background: #6c757d;
+                    color: white; font-weight: 500;
+                ">
+                Cancelar
+            </button>
+        </div>
+
+        <style>
+            @keyframes fadeInClear {
+                from { opacity: 0; transform: scale(.95); }
+                to   { opacity: 1; transform: scale(1); }
+            }
+        </style>
+    `;
+
+    document.body.appendChild(modal);
+}
+
+//confirmar carrito vacio
+function confirmClearCart() {
+    clearCart();
+
+    const modal = document.getElementById("clearCartModal");
+    if (modal) modal.remove();
+
+    if (typeof renderCart === "function") renderCart();
+}
+
+//aviso de producto agregado
+function showAddedToast() {
+
+    const existing = document.getElementById("toastAdded");
+    if (existing) existing.remove();
+
+    const toast = document.createElement("div");
+    toast.id = "toastAdded";
+    toast.style = `
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        background: rgba(30,30,30,0.90);
+        color: white;
+        padding: 14px 20px;
+        border-radius: 10px;
+        font-size: 15px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 999999;
+        animation: fadeInToast .3s ease-out;
+    `;
+
+    toast.innerHTML = `
+        <i class="bi bi-check-circle-fill" style="color:#28db5f; font-size: 18px;"></i>
+        <span>Producto agregado con éxito</span>
+
+        <style>
+            @keyframes fadeInToast {
+                from { opacity: 0; transform: translateY(10px); }
+                to   { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes fadeOutToast {
+                from { opacity: 1; transform: translateY(0); }
+                to   { opacity: 0; transform: translateY(10px); }
+            }
+        </style>
+    `;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = "fadeOutToast .4s ease-in forwards";
+        setTimeout(() => toast.remove(), 400);
+    }, 2200);
 }

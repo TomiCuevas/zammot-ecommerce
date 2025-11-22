@@ -46,6 +46,7 @@
 
     </div>
 
+    <!-- ventana emergente para ver producto -->
     <div class="modal fade" id="modalProducto" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content text-dark">
@@ -70,15 +71,11 @@
     </div>
 
 
-
 <script>
 
 document.addEventListener("DOMContentLoaded", () => {
     const user = sessionStorage.getItem("loggedUser");
-    if (!user) {
-        alert("Debes iniciar sesión para ver tu carrito.");
-        window.location.href = "../index.html";
-    }
+    if (!user) window.location.href = "../index.html";
 });
 
 function verProducto(id) {
@@ -201,12 +198,13 @@ function renderCart() {
 
 renderCart();
 
+
 function pagar() {
 
     const cart = loadCart();
 
     if (cart.length === 0) {
-        alert("No hay productos en el carrito.");
+        
         return;
     }
 
@@ -214,26 +212,11 @@ function pagar() {
     updateCartCount();
     renderCart();
 
-    alert("¡Pago realizado con éxito! Gracias por tu compra");
     window.location.href = "./home.html";
 }
 
 function vaciarCarrito() {
-
-    const cart = loadCart();
-
-    if (cart.length === 0) {
-        alert("El carrito ya está vacío.");
-        return;
-    }
-
-    if (!confirm("¿Seguro que deseas vaciar el carrito?")) return;
-
-    clearCart();
-    updateCartCount();
-    renderCart();
-
-    alert("Carrito vaciado correctamente.");
+    showClearCartModal();
 }
 
 </script>

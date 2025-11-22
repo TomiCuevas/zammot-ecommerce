@@ -104,8 +104,6 @@ function renderNavbar() {
         if (loggedUser && typeof updateCartCount === "function") {
             updateCartCount();
         }
-
-        // ⭐ Actualiza el contador del wishlist
         if (typeof updateWishlistCount === "function") {
             updateWishlistCount();
         }
