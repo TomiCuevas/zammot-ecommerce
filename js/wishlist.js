@@ -1,31 +1,36 @@
-
+//obtener email del logueado
 function getUserEmail() {
     const user = sessionStorage.getItem("loggedUser");
     if (!user) return null;
     return JSON.parse(user).email;
 }
 
-// Devuelve la clave única para este usuario
+//clave unica de cada usuario
 function getWishlistKey() {
     const email = getUserEmail();
     if (!email) return null;
     return `zammot_wishlist_${email}`;
 }
 
-// Cargar favoritos
 function loadWishlist() {
     const KEY = getWishlistKey();
-    if (!KEY) return [];
-    return JSON.parse(localStorage.getItem(KEY)) || [];
+    if (!KEY) return [];  
+
+    const list = JSON.parse(localStorage.getItem(KEY));
+
+    if (!Array.isArray(list)) return [];
+
+    return list;
 }
 
-// Guardar favoritos
 function saveWishlist(list) {
     const KEY = getWishlistKey();
     if (!KEY) return;
     localStorage.setItem(KEY, JSON.stringify(list));
 }
 
+
+// cartel para intruso
 function showLoginRequiredModal() {
     const modal = document.createElement("div");
 
@@ -49,7 +54,7 @@ function showLoginRequiredModal() {
             <h4 class="mb-3">Inicia sesión para continuar</h4>
 
             <p class="text-white-50 mb-4">
-                Para agregar productos a tu lista de favoritos debes iniciar sesión.
+                Para agregar productos a favoritos debes iniciar sesión.
             </p>
 
             <button onclick="window.location.href='../index.html'"
@@ -84,10 +89,9 @@ function showLoginRequiredModal() {
     document.body.appendChild(modal);
 }
 
-// agregar o sacar fav
+//agregar y sacar favorito
 function toggleFavorite(productId) {
 
-    //bloquear si no está logueado
     if (localStorage.getItem("isLoggedIn") !== "true") {
         showLoginRequiredModal();
         return;
@@ -98,8 +102,7 @@ function toggleFavorite(productId) {
     if (list.includes(productId)) {
         list = list.filter(id => id !== productId);
         saveWishlist(list);
-
-        removeFavoriteCard(productId, list); // eliminar visual en favoritos.html
+        removeFavoriteCard(productId, list);
     } else {
         list.push(productId);
         saveWishlist(list);
@@ -109,11 +112,13 @@ function toggleFavorite(productId) {
     updateWishlistCount();
 }
 
-// Verificar si un producto está en favoritos
+
 function isFavorite(productId) {
     let list = loadWishlist();
+    if (!Array.isArray(list)) return false; 
     return list.includes(productId);
 }
+
 
 function updateWishlistIcon(productId) {
     const btn = document.querySelector(`#fav-${productId}`);
@@ -126,14 +131,18 @@ function updateWishlistIcon(productId) {
     }
 }
 
-// contador en navbar de favoritos
+
+//contador de favoritos en navbar evitando errores NaN
 function updateWishlistCount() {
     const counter = document.getElementById("wishlist-count");
     if (!counter) return;
 
-    const list = loadWishlist();
+    let list = loadWishlist();
+    if (!Array.isArray(list)) list = [];
+
     counter.textContent = list.length;
 }
+
 
 function removeFavoriteCard(productId, updatedList) {
 
@@ -166,7 +175,7 @@ function removeFavoriteCard(productId, updatedList) {
                         <h3 class="fw-bold mb-3">Todavía no agregaste favoritos</h3>
 
                         <p class="text-white-50 mb-4">
-                            Cuando marques un producto con ❤️ aparecerá acá para verlo más tarde.
+                            Cuando marques un producto con ❤️ aparecerá acá.
                         </p>
 
                         <a href="../pages/home.html" class="btn btn-primary px-4 py-2">
