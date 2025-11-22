@@ -5,7 +5,6 @@ function getCartKey() {
     return "cart_" + user.email; // un carrito por usuario
 }
 
-
 function loadCart() {
     const key = getCartKey();
     if (!key) return []; // si no hay user, carrito vacío
@@ -25,10 +24,69 @@ function saveCart(cart) {
     localStorage.setItem(key, JSON.stringify(cart));
 }
 
-
 function clearCart() {
     saveCart([]);
     updateCartCount();
+}
+
+// compra exitosa
+function showPurchaseSuccess() {
+
+    const existing = document.getElementById("purchaseSuccessModal");
+    if (existing) existing.remove();
+
+    const modal = document.createElement("div");
+    modal.id = "purchaseSuccessModal";
+
+    modal.style = `
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.70);
+        backdrop-filter: blur(6px);
+        display: flex; justify-content: center; align-items: center;
+        z-index: 999999;
+    `;
+
+    modal.innerHTML = `
+        <div style="
+            background: rgba(20,20,20,0.92);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 30px;
+            border-radius: 18px;
+            width: 90%; max-width: 380px;
+            text-align: center; color: white;
+            animation: fadeInSuccess .3s ease-out;
+        ">
+
+            <i class="bi bi-bag-check-fill" style="font-size: 55px; color:#28db5f;"></i>
+
+            <h3 class="mt-3 mb-2">¡Compra exitosa!</h3>
+
+            <p class="text-white-50 mb-4">
+                Gracias por tu compra.  
+                Tu pedido está siendo procesado.
+            </p>
+
+            <button onclick="document.getElementById('purchaseSuccessModal').remove()"
+                style="
+                    width: 100%; padding: 12px;
+                    border: none; border-radius: 10px;
+                    background: #0d6efd; color: white;
+                    font-weight: 600;
+                ">
+                Aceptar
+            </button>
+        </div>
+
+        <style>
+            @keyframes fadeInSuccess {
+                from { opacity: 0; transform: scale(.92); }
+                to   { opacity: 1; transform: scale(1); }
+            }
+        </style>
+    `;
+
+    document.body.appendChild(modal);
 }
 
 function addToCart(productId, qty = 1) {
@@ -59,7 +117,6 @@ function addToCart(productId, qty = 1) {
     //aviso producto agregado
     showAddedToast();
 }
-
 
 function removeFromCart(productId) {
     let cart = loadCart();
@@ -261,7 +318,6 @@ function showClearCartModal() {
     document.body.appendChild(modal);
 }
 
-//confirmar carrito vacio
 function confirmClearCart() {
     clearCart();
 

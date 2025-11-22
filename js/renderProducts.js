@@ -1,3 +1,4 @@
+
 let PRODUCTS_CACHE = [];
 
 function loadProducts() {
@@ -15,7 +16,10 @@ function loadProducts() {
         });
 }
 
+
+
 function renderProducts(category) {
+
     const container = document.getElementById("product-list");
 
     if (!container) {
@@ -23,6 +27,7 @@ function renderProducts(category) {
         return;
     }
 
+    // si no cargó el JSON todavía, cargar y reintentar
     if (PRODUCTS_CACHE.length === 0) {
         loadProducts().then(() => renderProducts(category));
         return;
@@ -36,8 +41,11 @@ function renderProducts(category) {
     }
 
     container.innerHTML = filtered.map(renderProductCard).join("");
+
+    // actualizar íconos de favoritos
     filtered.forEach(p => updateWishlistIcon(p.id));
 }
+
 
 function renderProductCard(product) {
     return `
@@ -89,6 +97,7 @@ function renderProductCard(product) {
                 <button class="qty-btn" onclick="changeQty('${product.id}', 1)">+</button>
             </div>
 
+            <!-- BOTÓN AGREGAR -->
             <button class="btn btn-primary w-100 mt-auto"
                 onclick="addProductToCart('${product.id}')">
                 <i class="bi bi-cart-plus"></i> Agregar al carrito
@@ -97,6 +106,7 @@ function renderProductCard(product) {
         </div>
     </div>`;
 }
+
 
 function changeQty(id, amount) {
     const qtySpan = document.getElementById(`qty-${id}`);
@@ -109,14 +119,14 @@ function changeQty(id, amount) {
     qtySpan.textContent = qty;
 }
 
+
+
 function addProductToCart(id) {
 
     const qtySpan = document.getElementById(`qty-${id}`);
-    if (!qtySpan) return;
+    const qty = qtySpan ? parseInt(qtySpan.textContent) || 1 : 1;
 
-    const qty = parseInt(qtySpan.textContent) || 1;
-
-    // el login se maneja desde addToCart()
+    // El login y el agregado se manejan desde carrito.js
     if (typeof window.addToCart === "function") {
         window.addToCart(id, qty);
     } else {
@@ -124,4 +134,7 @@ function addProductToCart(id) {
         return;
     }
 
+    if (typeof window.showAddedToast === "function") {
+        window.showAddedToast();
+    }
 }
