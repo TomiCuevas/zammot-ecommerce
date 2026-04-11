@@ -1,4 +1,3 @@
-
 function getUsers() {
     return JSON.parse(localStorage.getItem("users")) || [];
 }
@@ -11,8 +10,44 @@ function getLoggedUser() {
     return JSON.parse(sessionStorage.getItem("loggedUser")) || null;
 }
 
-// nombre y apellido con mayuscula inicial
+// cargar usuarios desde usuarios.json una sola vez
+async function initUsersFromJSON() {
+    try {
+        const alreadyInitialized = localStorage.getItem("usersInitialized");
+        const existingUsers = getUsers();
 
+        if (alreadyInitialized === "true" && existingUsers.length > 0) {
+            return;
+        }
+
+        const isInPages = window.location.pathname.includes("/pages/");
+        const basePath = isInPages ? "../" : "./";
+
+        const response = await fetch(`${basePath}data/usuarios.json`);
+        if (!response.ok) throw new Error("No se pudo cargar usuarios.json");
+
+        const jsonUsers = await response.json();
+
+        const adaptedUsers = jsonUsers.map(user => ({
+            id: user.id,
+            nombre: user.nombre,
+            apellido: user.apellido,
+            email: user.email,
+            password: user.password,
+            fechaNac: user.fechaNac || "",
+            activo: user.activo ?? true,
+            direccion: user.direccion || ""
+        }));
+
+        saveUsers(adaptedUsers);
+        localStorage.setItem("usersInitialized", "true");
+        console.log("usuarios.json cargado correctamente");
+    } catch (error) {
+        console.error("Error inicializando usuarios desde JSON:", error);
+    }
+}
+
+// nombre y apellido con mayúscula inicial
 function capitalize(text) {
     return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 }
@@ -44,7 +79,17 @@ function registerUser(event) {
         return;
     }
 
-    users.push({ nombre, apellido, email, password, fechaNac });
+    users.push({
+        id: Date.now(),
+        nombre,
+        apellido,
+        email,
+        password,
+        fechaNac,
+        activo: true,
+        direccion: ""
+    });
+
     saveUsers(users);
 
     showRegisterToast();
@@ -54,10 +99,8 @@ function registerUser(event) {
     }, 1600);
 }
 
-
-//inicio sesion
-
-function loginUser(event) {
+// inicio sesion
+async function loginUser(event) {
     event.preventDefault();
 
     const email = document.getElementById("email")?.value.trim();
@@ -68,7 +111,13 @@ function loginUser(event) {
         return;
     }
 
-    const users = getUsers();
+    // si todavía no hay usuarios en localStorage, intentamos cargarlos
+    let users = getUsers();
+    if (users.length === 0) {
+        await initUsersFromJSON();
+        users = getUsers();
+    }
+
     const user = users.find(u => u.email === email && u.password === password);
 
     if (!user) {
@@ -76,11 +125,19 @@ function loginUser(event) {
         return;
     }
 
+    if (user.activo === false) {
+        showErrorToast("Tu cuenta está desactivada.");
+        return;
+    }
+
     sessionStorage.setItem("loggedUser", JSON.stringify({
+        id: user.id,
         email: user.email,
         nombre: user.nombre,
         apellido: user.apellido,
-        fechaNac: user.fechaNac,
+        fechaNac: user.fechaNac || "",
+        activo: user.activo ?? true,
+        direccion: user.direccion || "",
         loginTime: new Date().toISOString()
     }));
 
@@ -89,21 +146,19 @@ function loginUser(event) {
     window.location.href = "./pages/home.html";
 }
 
-//cerrar la sesion
+// cerrar la sesion
 function logoutUser() {
     sessionStorage.removeItem("loggedUser");
     localStorage.removeItem("isLoggedIn");
     window.location.href = "../index.html";
 }
 
-//ingresar sin login
-
+// ingresar sin login
 function visitWithoutLogin() {
     sessionStorage.removeItem("loggedUser");
     localStorage.removeItem("isLoggedIn");
     window.location.href = "./pages/home.html";
 }
-
 
 function openForgotModal() {
     const modal = document.getElementById("forgotModal");
@@ -140,7 +195,6 @@ function sendRecoveryEmail() {
 }
 
 function showRegisterToast() {
-
     removeExistingToast();
 
     const toast = document.createElement("div");
@@ -157,9 +211,7 @@ function showRegisterToast() {
     autoRemoveToast(toast);
 }
 
-
 function showErrorToast(msg) {
-
     removeExistingToast();
 
     const toast = document.createElement("div");
@@ -177,7 +229,6 @@ function showErrorToast(msg) {
 }
 
 function showSuccessToast(msg) {
-
     removeExistingToast();
 
     const toast = document.createElement("div");
@@ -193,7 +244,6 @@ function showSuccessToast(msg) {
     document.body.appendChild(toast);
     autoRemoveToast(toast);
 }
-
 
 function toastBaseStyle() {
     return `
@@ -244,3 +294,7 @@ function removeExistingToast() {
     if (t2) t2.remove();
     if (t3) t3.remove();
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    initUsersFromJSON();
+});

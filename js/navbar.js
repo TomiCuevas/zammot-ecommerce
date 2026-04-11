@@ -1,5 +1,4 @@
 function renderNavbar() { 
-
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     const loggedUser = JSON.parse(sessionStorage.getItem("loggedUser"));
 
@@ -18,9 +17,8 @@ function renderNavbar() {
             <ul class="navbar-nav ms-auto">
     `;
 
-    //navbar para el intruso
+    // navbar para el intruso
     if (!isLoggedIn || !loggedUser) {
-
         nav += `
             <li class="nav-item">
                 <a class="nav-link" href="../pages/home.html">Home</a>
@@ -41,10 +39,8 @@ function renderNavbar() {
         `;
     }
 
-    // Navbar para usuario
+    // navbar para usuario logueado
     else {
-
-        //saludo
         const nombreMostrar = loggedUser.nombre?.split(" ")[0] || "Usuario";
 
         nav += `
@@ -54,14 +50,20 @@ function renderNavbar() {
         `;
 
         pages.forEach(p => {
+            const icono = p.title === "Mis compras"
+                ? `<i class="bi bi-bag-check me-1"></i>`
+                : "";
+
             nav += `
                 <li class="nav-item">
-                    <a class="nav-link" href="${p.url}">${p.title}</a>
+                    <a class="nav-link d-flex align-items-center" href="${p.url}">
+                        ${icono}${p.title}
+                    </a>
                 </li>
             `;
         });
 
-        //favoritos
+        // favoritos
         nav += `
             <li class="nav-item">
                 <a class="nav-link d-flex align-items-center gap-1" href="../pages/favoritos.html">
@@ -71,7 +73,7 @@ function renderNavbar() {
             </li>
         `;
 
-        // Carrito
+        // carrito
         nav += `
             <li class="nav-item">
                 <a class="nav-link d-flex align-items-center gap-1" href="../pages/carrito.html">
@@ -81,7 +83,7 @@ function renderNavbar() {
             </li>
         `;
 
-        // Logout
+        // logout
         nav += `
             <li class="nav-item">
                 <a class="nav-link text-danger fw-bold d-flex align-items-center gap-1"

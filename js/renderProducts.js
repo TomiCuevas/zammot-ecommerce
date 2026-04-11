@@ -1,4 +1,3 @@
-
 let PRODUCTS_CACHE = [];
 
 function loadProducts() {
@@ -16,10 +15,7 @@ function loadProducts() {
         });
 }
 
-
-
 function renderProducts(category) {
-
     const container = document.getElementById("product-list");
 
     if (!container) {
@@ -33,19 +29,24 @@ function renderProducts(category) {
         return;
     }
 
-    const filtered = PRODUCTS_CACHE.filter(p => p.category === category);
+    const filtered = PRODUCTS_CACHE.filter(p =>
+        p.category === category && p.disponible !== false
+    );
 
     if (!filtered.length) {
-        container.innerHTML = `<p class="text-center">No hay productos en esta categoría.</p>`;
+        container.innerHTML = `<p class="text-center">No hay productos disponibles en esta categoría.</p>`;
         return;
     }
 
     container.innerHTML = filtered.map(renderProductCard).join("");
 
     // actualizar íconos de favoritos
-    filtered.forEach(p => updateWishlistIcon(p.id));
+    filtered.forEach(p => {
+        if (typeof updateWishlistIcon === "function") {
+            updateWishlistIcon(p.id);
+        }
+    });
 }
-
 
 function renderProductCard(product) {
     return `
@@ -66,6 +67,10 @@ function renderProductCard(product) {
                     <i class="bi bi-heart"></i>
                 </button>
             </h5>
+
+            ${product.disponible === false ? `
+                <span class="badge bg-danger mb-2">Sin stock</span>
+            ` : ``}
 
             <p class="card-text flex-grow-1">${product.description}</p>
 
@@ -98,15 +103,19 @@ function renderProductCard(product) {
             </div>
 
             <!-- BOTÓN AGREGAR -->
-            <button class="btn btn-primary w-100 mt-auto"
-                onclick="addProductToCart('${product.id}')">
-                <i class="bi bi-cart-plus"></i> Agregar al carrito
-            </button>
-
+            ${product.disponible !== false ? `
+                <button class="btn btn-primary w-100 mt-auto"
+                    onclick="addProductToCart('${product.id}')">
+                    <i class="bi bi-cart-plus"></i> Agregar al carrito
+                </button>
+            ` : `
+                <button class="btn btn-secondary w-100 mt-auto" disabled>
+                    Sin stock
+                </button>
+            `}
         </div>
     </div>`;
 }
-
 
 function changeQty(id, amount) {
     const qtySpan = document.getElementById(`qty-${id}`);
@@ -119,9 +128,18 @@ function changeQty(id, amount) {
     qtySpan.textContent = qty;
 }
 
-
-
 function addProductToCart(id) {
+    const product = PRODUCTS_CACHE.find(p => p.id === id);
+
+    if (!product) {
+        console.error("ERROR: Producto no encontrado");
+        return;
+    }
+
+    if (product.disponible === false) {
+        console.error("ERROR: Producto sin stock");
+        return;
+    }
 
     const qtySpan = document.getElementById(`qty-${id}`);
     const qty = qtySpan ? parseInt(qtySpan.textContent) || 1 : 1;

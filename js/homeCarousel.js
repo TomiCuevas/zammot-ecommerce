@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function buildHorizontalCarousel() {
-
     const track = document.querySelector(".horizontal-track");
 
     if (!track) {
@@ -15,13 +14,14 @@ function buildHorizontalCarousel() {
         return;
     }
 
-    const destacados = PRODUCTS_CACHE.filter(p => p.category === "destacados");
+    const destacados = PRODUCTS_CACHE.filter(
+        p => p.category === "destacados" && p.disponible !== false
+    );
 
     if (!destacados.length) {
-        track.innerHTML = `<p class="text-center">No hay destacados.</p>`;
+        track.innerHTML = `<p class="text-center">No hay destacados disponibles.</p>`;
         return;
     }
-
 
     track.innerHTML = destacados
         .map(p => `
@@ -34,6 +34,11 @@ function buildHorizontalCarousel() {
     const btnLeft = document.querySelector(".left-btn");
     const btnRight = document.querySelector(".right-btn");
 
-    btnLeft.onclick = () => track.scrollBy({ left: -300, behavior: "smooth" });
-    btnRight.onclick = () => track.scrollBy({ left: 300, behavior: "smooth" });
+    if (btnLeft) {
+        btnLeft.onclick = () => track.scrollBy({ left: -300, behavior: "smooth" });
+    }
+
+    if (btnRight) {
+        btnRight.onclick = () => track.scrollBy({ left: 300, behavior: "smooth" });
+    }
 }

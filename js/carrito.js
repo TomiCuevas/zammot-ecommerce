@@ -1,4 +1,4 @@
-//trae clave unica del carrito segun usuario logueado
+// trae clave unica del carrito segun usuario logueado
 function getCartKey() {
     const user = JSON.parse(sessionStorage.getItem("loggedUser"));
     if (!user) return null;
@@ -29,9 +29,92 @@ function clearCart() {
     updateCartCount();
 }
 
+// =========================
+// HISTORIAL DE COMPRAS REAL
+// =========================
+
+function getSalesKey() {
+    const user = JSON.parse(sessionStorage.getItem("loggedUser"));
+    if (!user) return null;
+    return "sales_" + user.email;
+}
+
+function loadSales() {
+    const key = getSalesKey();
+    if (!key) return [];
+    return JSON.parse(localStorage.getItem(key)) || [];
+}
+
+function saveSales(sales) {
+    const key = getSalesKey();
+    if (!key) return;
+    localStorage.setItem(key, JSON.stringify(sales));
+}
+
+async function completePurchase() {
+    const user = JSON.parse(sessionStorage.getItem("loggedUser"));
+    if (!user) {
+        showCartLoginModal();
+        return;
+    }
+
+    const cart = loadCart();
+
+    if (!cart.length) {
+        showErrorPurchaseToast("Tu carrito está vacío.");
+        return;
+    }
+
+    try {
+        const response = await fetch("../data/products.json");
+        if (!response.ok) throw new Error("No se pudo cargar products.json");
+
+        const products = await response.json();
+
+        const details = cart.map(item => {
+            const product = products.find(p => p.id === item.id);
+
+            return {
+                id: item.id,
+                title: product ? product.title : "Producto no encontrado",
+                price: product ? Number(product.price) : 0,
+                qty: item.qty,
+                subtotal: product ? Number(product.price) * item.qty : 0
+            };
+        });
+
+        const total = details.reduce((acc, item) => acc + item.subtotal, 0);
+
+        const sale = {
+            id: Date.now(),
+            fecha: new Date().toISOString().split("T")[0],
+            total,
+            direccion: "Compra realizada desde carrito",
+            entregado: true,
+            productos: details.map(item => item.id),
+            detalles: details
+        };
+
+        const sales = loadSales();
+        sales.unshift(sale);
+        saveSales(sales);
+
+        clearCart();
+
+        if (typeof renderCart === "function") renderCart();
+
+        showPurchaseSuccess();
+    } catch (error) {
+        console.error("Error al completar compra:", error);
+        showErrorPurchaseToast("No se pudo completar la compra.");
+    }
+}
+
+window.completePurchase = completePurchase;
+window.loadSales = loadSales;
+
 // compra exitosa
 function showPurchaseSuccess() {
-
     const existing = document.getElementById("purchaseSuccessModal");
     if (existing) existing.remove();
 
@@ -57,14 +140,13 @@ function showPurchaseSuccess() {
             text-align: center; color: white;
             animation: fadeInSuccess .3s ease-out;
         ">
-
             <i class="bi bi-bag-check-fill" style="font-size: 55px; color:#28db5f;"></i>
 
             <h3 class="mt-3 mb-2">¡Compra exitosa!</h3>
 
             <p class="text-white-50 mb-4">
-                Gracias por tu compra.  
-                Tu pedido está siendo procesado.
+                Gracias por tu compra.
+                Tu pedido fue guardado en el historial.
             </p>
 
             <button onclick="document.getElementById('purchaseSuccessModal').remove()"
@@ -89,9 +171,55 @@ function showPurchaseSuccess() {
     document.body.appendChild(modal);
 }
 
-function addToCart(productId, qty = 1) {
+function showErrorPurchaseToast(msg) {
+    const existing = document.getElementById("purchaseErrorToast");
+    if (existing) existing.remove();
 
-    const user = JSON.parse(sessionStorage.getItem("loggedUser"))
+    const toast = document.createElement("div");
+    toast.id = "purchaseErrorToast";
+    toast.style = `
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        background: rgba(30,30,30,0.92);
+        color: white;
+        padding: 14px 20px;
+        border-radius: 10px;
+        font-size: 15px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 999999;
+        animation: fadeInToast .3s ease-out;
+    `;
+
+    toast.innerHTML = `
+        <i class="bi bi-exclamation-circle-fill" style="color:#ff4444; font-size: 18px;"></i>
+        <span>${msg}</span>
+
+        <style>
+            @keyframes fadeInToast {
+                from { opacity: 0; transform: translateY(10px); }
+                to   { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes fadeOutToast {
+                from { opacity: 1; transform: translateY(0); }
+                to   { opacity: 0; transform: translateY(10px); }
+            }
+        </style>
+    `;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = "fadeOutToast .4s ease-in forwards";
+        setTimeout(() => toast.remove(), 400);
+    }, 2200);
+}
+
+function addToCart(productId, qty = 1) {
+    const user = JSON.parse(sessionStorage.getItem("loggedUser"));
     if (!user) {
         showCartLoginModal();
         return;
@@ -114,7 +242,7 @@ function addToCart(productId, qty = 1) {
     saveCart(cart);
     updateCartCount();
 
-    //aviso producto agregado
+    // aviso producto agregado
     showAddedToast();
 }
 
@@ -129,7 +257,6 @@ function removeFromCart(productId) {
 }
 
 function updateQty(productId, change) {
-
     let cart = loadCart();
     const item = cart.find(p => p.id === productId);
     if (!item) return;
@@ -161,11 +288,12 @@ function updateCartCount() {
 
 window.updateCartCount = updateCartCount;
 
-//adaptacion a celus
+// adaptacion a celus
 function openProductModal(product, cartItemQty) {
-
     const modalBody = document.getElementById("modal-body");
     const modalTitle = document.getElementById("modal-title");
+
+    if (!modalBody || !modalTitle) return;
 
     modalTitle.textContent = product.title;
 
@@ -189,7 +317,7 @@ function openProductModal(product, cartItemQty) {
     `;
 }
 
-//esto es para los intrusos...tienen que loguearse
+// esto es para los intrusos... tienen que loguearse
 function showCartLoginModal() {
     const modal = document.createElement("div");
 
@@ -248,7 +376,7 @@ function showCartLoginModal() {
     document.body.appendChild(modal);
 }
 
-//confirmar si vaciamos carrito
+// confirmar si vaciamos carrito
 function showClearCartModal() {
     const existing = document.getElementById("clearCartModal");
     if (existing) existing.remove();
@@ -327,9 +455,8 @@ function confirmClearCart() {
     if (typeof renderCart === "function") renderCart();
 }
 
-//aviso de producto agregado
+// aviso de producto agregado
 function showAddedToast() {
-
     const existing = document.getElementById("toastAdded");
     if (existing) existing.remove();
 
