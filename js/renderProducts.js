@@ -29,12 +29,12 @@ function renderProducts(category) {
         return;
     }
 
-    const filtered = PRODUCTS_CACHE.filter(p =>
-        p.category === category && p.disponible !== false
-    );
+    // mostrar todos los productos de la categoría,
+    // incluso los que no tienen stock
+    const filtered = PRODUCTS_CACHE.filter(p => p.category === category);
 
     if (!filtered.length) {
-        container.innerHTML = `<p class="text-center">No hay productos disponibles en esta categoría.</p>`;
+        container.innerHTML = `<p class="text-center">No hay productos en esta categoría.</p>`;
         return;
     }
 

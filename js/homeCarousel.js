@@ -14,12 +14,14 @@ function buildHorizontalCarousel() {
         return;
     }
 
+    //mostrar todos los destacados,
+    // incluso los que están sin stock
     const destacados = PRODUCTS_CACHE.filter(
-        p => p.category === "destacados" && p.disponible !== false
+        p => p.category === "destacados"
     );
 
     if (!destacados.length) {
-        track.innerHTML = `<p class="text-center">No hay destacados disponibles.</p>`;
+        track.innerHTML = `<p class="text-center">No hay productos destacados.</p>`;
         return;
     }
 

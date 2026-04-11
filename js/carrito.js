@@ -29,9 +29,8 @@ function clearCart() {
     updateCartCount();
 }
 
-// =========================
 // HISTORIAL DE COMPRAS REAL
-// =========================
+
 
 function getSalesKey() {
     const user = JSON.parse(sessionStorage.getItem("loggedUser"));

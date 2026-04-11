@@ -33,7 +33,7 @@
     "price": 98000,
     "img": "../styles/img/camisas/camisanegra.webp",
     "category": "camisas",
-    "disponible": true
+    "disponible": false
   },
   {
     "id": "c5",
@@ -168,7 +168,7 @@
     "price": 98000,
     "img": "../styles/img/camisas/camisanegra.webp",
     "category": "destacados",
-    "disponible": true
+    "disponible": false
   },
   {
     "id": "d5",
