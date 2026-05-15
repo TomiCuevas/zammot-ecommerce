@@ -29,8 +29,39 @@ async function createSaleApi(saleData) {
 
 }
 
+async function getSalesByUserApi(id_usuario) {
+
+    const response = await fetch(
+        `${SALES_API_URL}/user`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id_usuario
+            })
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+
+        throw new Error(
+            data.message || "Error al obtener ventas del usuario"
+        );
+
+    }
+
+    return data;
+
+}
+
 window.createSaleApi = createSaleApi;
+window.getSalesByUserApi = getSalesByUserApi;
 
 export {
-    createSaleApi
+    createSaleApi,
+    getSalesByUserApi
 };
