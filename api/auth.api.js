@@ -29,8 +29,34 @@ async function loginApi(email, password) {
 
 }
 
+async function createUserApi(userData) {
+
+    const response = await fetch(`${API_URL}/create`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+
+        throw new Error(
+            data.message || "Error al crear usuario"
+        );
+
+    }
+
+    return data;
+
+}
+
 window.loginApi = loginApi;
+window.createUserApi = createUserApi;
 
 export {
-    loginApi
+    loginApi,
+    createUserApi
 };

@@ -1,243 +1,351 @@
-function getUsers() {
-    return JSON.parse(localStorage.getItem("users")) || [];
-}
-
-function saveUsers(users) {
-    localStorage.setItem("users", JSON.stringify(users));
-}
-
 function getLoggedUser() {
-    return JSON.parse(sessionStorage.getItem("loggedUser")) || null;
-}
-
-// cargar usuarios desde usuarios.json una sola vez
-async function initUsersFromJSON() {
-    try {
-        const alreadyInitialized = localStorage.getItem("usersInitialized");
-        const existingUsers = getUsers();
-
-        if (alreadyInitialized === "true" && existingUsers.length > 0) {
-            return;
-        }
-
-        const isInPages = window.location.pathname.includes("/pages/");
-        const basePath = isInPages ? "../" : "./";
-
-        const response = await fetch(`${basePath}data/usuarios.json`);
-        if (!response.ok) throw new Error("No se pudo cargar usuarios.json");
-
-        const jsonUsers = await response.json();
-
-        const adaptedUsers = jsonUsers.map(user => ({
-            id: user.id,
-            nombre: user.nombre,
-            apellido: user.apellido,
-            email: user.email,
-            password: user.password,
-            fechaNac: user.fechaNac || "",
-            activo: user.activo ?? true,
-            direccion: user.direccion || ""
-        }));
-
-        saveUsers(adaptedUsers);
-        localStorage.setItem("usersInitialized", "true");
-        console.log("usuarios.json cargado correctamente");
-    } catch (error) {
-        console.error("Error inicializando usuarios desde JSON:", error);
-    }
+    return JSON.parse(
+        sessionStorage.getItem("loggedUser")
+    ) || null;
 }
 
 // nombre y apellido con mayúscula inicial
 function capitalize(text) {
-    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+
+    return text.charAt(0).toUpperCase() +
+        text.slice(1).toLowerCase();
+
 }
 
-function registerUser(event) {
+// REGISTRO
+async function registerUser(event) {
+
     event.preventDefault();
 
-    const nombre = capitalize(document.getElementById("reg-nombre")?.value.trim());
-    const apellido = capitalize(document.getElementById("reg-apellido")?.value.trim());
-    const email = document.getElementById("reg-email")?.value.trim();
-    const password = document.getElementById("reg-pass")?.value.trim();
-    const fechaNac = document.getElementById("reg-fechaNac")?.value.trim();
+    const nombre = capitalize(
+        document.getElementById("reg-nombre")
+            ?.value.trim()
+    );
 
-    if (!nombre || !apellido || !email || !password || !fechaNac) {
-        showErrorToast("Completá todos los campos.");
+    const apellido = capitalize(
+        document.getElementById("reg-apellido")
+            ?.value.trim()
+    );
+
+    const email =
+        document.getElementById("reg-email")
+            ?.value.trim();
+
+    const password =
+        document.getElementById("reg-pass")
+            ?.value.trim();
+
+    const fechaNac =
+        document.getElementById("reg-fechaNac")
+            ?.value.trim();
+
+    if (
+        !nombre ||
+        !apellido ||
+        !email ||
+        !password ||
+        !fechaNac
+    ) {
+
+        showErrorToast(
+            "Completá todos los campos."
+        );
+
         return;
+
     }
 
-    const emailRegex = /^[^\s@]+@(gmail|hotmail|outlook|yahoo|icloud)\.(com|com\.ar)$/i;
+    const emailRegex =
+        /^[^\s@]+@(gmail|hotmail|outlook|yahoo|icloud)\.(com|com\.ar)$/i;
+
     if (!emailRegex.test(email)) {
-        showErrorToast("Ingresá un email válido (.com o .com.ar).");
+
+        showErrorToast(
+            "Ingresá un email válido (.com o .com.ar)."
+        );
+
         return;
-    }
 
-    const users = getUsers();
-
-    if (users.some(u => u.email === email)) {
-        showErrorToast("Este email ya está registrado.");
-        return;
-    }
-
-    users.push({
-        id: Date.now(),
-        nombre,
-        apellido,
-        email,
-        password,
-        fechaNac,
-        activo: true,
-        direccion: ""
-    });
-
-    saveUsers(users);
-
-    showRegisterToast();
-
-    setTimeout(() => {
-        window.location.href = "../index.html";
-    }, 1600);
-}
-
-// inicio sesion
-async function loginUser(event) {
-    event.preventDefault();
-
-    const email = document.getElementById("email")?.value.trim();
-    const password = document.getElementById("password")?.value.trim();
-
-    if (!email || !password) {
-        showErrorToast("Completá todos los campos.");
-        return;
     }
 
     try {
-        const user = await loginApi(email, password);
 
-        if (user.activo === false) {
-            showErrorToast("Tu cuenta está desactivada.");
-            return;
-        }
+        await createUserApi({
+            nombre,
+            apellido,
+            email,
+            password,
+            fechaNac,
+            activo: true,
+            direccion: ""
+        });
 
-        sessionStorage.setItem("loggedUser", JSON.stringify({
-            id: user.id,
-            email: user.email,
-            nombre: user.nombre,
-            apellido: user.apellido,
-            activo: user.activo,
-            direccion: user.direccion || "",
-            loginTime: new Date().toISOString()
-        }));
+        showRegisterToast();
 
-        localStorage.setItem("isLoggedIn", "true");
+        setTimeout(() => {
 
-        window.location.href = "./pages/home.html";
+            window.location.href =
+                "../index.html";
+
+        }, 1600);
 
     } catch (error) {
-        showErrorToast("Email o contraseña incorrectos.");
+
+        showErrorToast(
+            error.message ||
+            "Error registrando usuario."
+        );
+
     }
+
 }
 
-// cerrar la sesion
+// LOGIN
+async function loginUser(event) {
+
+    event.preventDefault();
+
+    const email =
+        document.getElementById("email")
+            ?.value.trim();
+
+    const password =
+        document.getElementById("password")
+            ?.value.trim();
+
+    if (!email || !password) {
+
+        showErrorToast(
+            "Completá todos los campos."
+        );
+
+        return;
+
+    }
+
+    try {
+
+        const user =
+            await loginApi(email, password);
+
+        if (user.activo === false) {
+
+            showErrorToast(
+                "Tu cuenta está desactivada."
+            );
+
+            return;
+
+        }
+
+        sessionStorage.setItem(
+            "loggedUser",
+            JSON.stringify({
+                id: user.id,
+                email: user.email,
+                nombre: user.nombre,
+                apellido: user.apellido,
+                activo: user.activo,
+                direccion: user.direccion || "",
+                loginTime: new Date().toISOString()
+            })
+        );
+
+        localStorage.setItem(
+            "isLoggedIn",
+            "true"
+        );
+
+        window.location.href =
+            "./pages/home.html";
+
+    } catch (error) {
+
+        showErrorToast(
+            "Email o contraseña incorrectos."
+        );
+
+    }
+
+}
+
+// cerrar sesión
 function logoutUser() {
-    sessionStorage.removeItem("loggedUser");
-    localStorage.removeItem("isLoggedIn");
-    window.location.href = "../index.html";
+
+    sessionStorage.removeItem(
+        "loggedUser"
+    );
+
+    localStorage.removeItem(
+        "isLoggedIn"
+    );
+
+    window.location.href =
+        "../index.html";
+
 }
 
 // ingresar sin login
 function visitWithoutLogin() {
-    sessionStorage.removeItem("loggedUser");
-    localStorage.removeItem("isLoggedIn");
-    window.location.href = "./pages/home.html";
+
+    sessionStorage.removeItem(
+        "loggedUser"
+    );
+
+    localStorage.removeItem(
+        "isLoggedIn"
+    );
+
+    window.location.href =
+        "./pages/home.html";
+
 }
 
 function openForgotModal() {
-    const modal = document.getElementById("forgotModal");
-    if (modal) modal.style.display = "flex";
+
+    const modal =
+        document.getElementById(
+            "forgotModal"
+        );
+
+    if (modal) {
+        modal.style.display = "flex";
+    }
+
 }
 
 function closeForgotModal() {
-    const modal = document.getElementById("forgotModal");
-    const emailInput = document.getElementById("forgotEmail");
-    if (emailInput) emailInput.value = "";
-    if (modal) modal.style.display = "none";
+
+    const modal =
+        document.getElementById(
+            "forgotModal"
+        );
+
+    const emailInput =
+        document.getElementById(
+            "forgotEmail"
+        );
+
+    if (emailInput) {
+        emailInput.value = "";
+    }
+
+    if (modal) {
+        modal.style.display = "none";
+    }
+
 }
 
 function sendRecoveryEmail() {
-    const emailInput = document.getElementById("forgotEmail");
+
+    const emailInput =
+        document.getElementById(
+            "forgotEmail"
+        );
+
     if (!emailInput) return;
 
-    const email = emailInput.value.trim();
+    const email =
+        emailInput.value.trim();
+
     if (!email) {
-        showErrorToast("Ingresá un email.");
+
+        showErrorToast(
+            "Ingresá un email."
+        );
+
         return;
+
     }
 
-    const users = getUsers();
-    const user = users.find(u => u.email === email);
+    showSuccessToast(
+        `Solicitud enviada para ${email}`
+    );
 
-    if (!user) {
-        showErrorToast("No existe una cuenta con ese email.");
-        return;
-    }
-
-    showSuccessToast(`Se envió un correo a ${email}`);
     closeForgotModal();
+
 }
 
 function showRegisterToast() {
+
     removeExistingToast();
 
-    const toast = document.createElement("div");
+    const toast =
+        document.createElement("div");
+
     toast.id = "toastRegister";
     toast.style = toastBaseStyle();
 
     toast.innerHTML = `
-        <i class="bi bi-check-circle-fill" style="color:#28db5f; font-size: 18px;"></i>
-        <span>Registro exitoso. Ahora podés iniciar sesión</span>
+        <i class="bi bi-check-circle-fill"
+           style="color:#28db5f; font-size:18px;"></i>
+
+        <span>
+            Registro exitoso.
+            Ahora podés iniciar sesión
+        </span>
+
         ${toastAnimations()}
     `;
 
     document.body.appendChild(toast);
+
     autoRemoveToast(toast);
+
 }
 
 function showErrorToast(msg) {
+
     removeExistingToast();
 
-    const toast = document.createElement("div");
+    const toast =
+        document.createElement("div");
+
     toast.id = "toastError";
     toast.style = toastBaseStyle();
 
     toast.innerHTML = `
-        <i class="bi bi-exclamation-circle-fill" style="color:#ff4444; font-size: 18px;"></i>
+        <i class="bi bi-exclamation-circle-fill"
+           style="color:#ff4444; font-size:18px;"></i>
+
         <span>${msg}</span>
+
         ${toastAnimations()}
     `;
 
     document.body.appendChild(toast);
+
     autoRemoveToast(toast);
+
 }
 
 function showSuccessToast(msg) {
+
     removeExistingToast();
 
-    const toast = document.createElement("div");
+    const toast =
+        document.createElement("div");
+
     toast.id = "toastSuccess";
     toast.style = toastBaseStyle();
 
     toast.innerHTML = `
-        <i class="bi bi-check2-circle" style="color:#28db5f; font-size:18px;"></i>
+        <i class="bi bi-check2-circle"
+           style="color:#28db5f; font-size:18px;"></i>
+
         <span>${msg}</span>
+
         ${toastAnimations()}
     `;
 
     document.body.appendChild(toast);
+
     autoRemoveToast(toast);
+
 }
 
 function toastBaseStyle() {
+
     return `
         position: fixed;
         bottom: 25px;
@@ -254,39 +362,83 @@ function toastBaseStyle() {
         z-index: 999999;
         animation: fadeInToast .3s ease-out;
     `;
+
 }
 
 function toastAnimations() {
+
     return `
         <style>
+
             @keyframes fadeInToast {
-                from { opacity: 0; transform: translateY(10px); }
-                to   { opacity: 1; transform: translateY(0); }
+
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+
             }
+
             @keyframes fadeOutToast {
-                from { opacity: 1; transform: translateY(0); }
-                to   { opacity: 0; transform: translateY(10px); }
+
+                from {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+
+                to {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+
             }
+
         </style>
     `;
+
 }
 
 function autoRemoveToast(toast) {
+
     setTimeout(() => {
-        toast.style.animation = "fadeOutToast .4s ease-in forwards";
-        setTimeout(() => toast.remove(), 400);
+
+        toast.style.animation =
+            "fadeOutToast .4s ease-in forwards";
+
+        setTimeout(() => {
+
+            toast.remove();
+
+        }, 400);
+
     }, 2200);
+
 }
 
 function removeExistingToast() {
-    const t1 = document.getElementById("toastRegister");
-    const t2 = document.getElementById("toastError");
-    const t3 = document.getElementById("toastSuccess");
+
+    const t1 =
+        document.getElementById(
+            "toastRegister"
+        );
+
+    const t2 =
+        document.getElementById(
+            "toastError"
+        );
+
+    const t3 =
+        document.getElementById(
+            "toastSuccess"
+        );
+
     if (t1) t1.remove();
     if (t2) t2.remove();
     if (t3) t3.remove();
-}
 
-document.addEventListener("DOMContentLoaded", () => {
-    initUsersFromJSON();
-});
+}

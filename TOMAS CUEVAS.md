@@ -1,20 +1,70 @@
-# ZAMMOT – E-commerce (Tp 1)
+# ZAMMOT – E-commerce
 
-**Alumno:** Cuevas Tomás Gonzalo
-**Materia:** Aplicaciones Web I  
-**Trabajo Práctico:** E-commerce – TRABAJO PRÁCTICO FINAL
+**Alumno:** Cuevas Tomás Gonzalo  
+**Materia:** Aplicaciones Web II
+**Trabajo Práctico:** E-commerce – Trabajo Práctico
 
 ---
 
 ## Descripción
 
 Este proyecto corresponde a la versión final de la aplicación de e-commerce llamada ZAMMOT.
-Incluye autenticación completa, carrito por usuario, sistema de favoritos, render dinámico desde JSON, páginas protegidas, modales personalizados, toasts, categorías y una estructura profesional de archivos.
+
+La aplicación fue desarrollada utilizando una arquitectura multirepo, separando el frontend y el backend en distintos repositorios para lograr una mejor organización y comunicación cliente-servidor mediante fetch y Express.js.
+
+El sistema permite:
+- Registro e inicio de sesión.
+- Navegación dinámica.
+- Gestión de carrito de compras.
+- Sistema de favoritos.
+- Render dinámico de productos.
+- Historial de compras.
+- Generación de órdenes de compra.
+- Persistencia de datos mediante backend y archivos JSON.
+
+---
+
+## Arquitectura del proyecto
+
+### Frontend
+Repositorio:
+
+https://github.com/TomiCuevas/zammot-ecommerce
+
+Tecnologías utilizadas:
+- HTML5
+- CSS3
+- JavaScript
+- Bootstrap 5
+- Bootstrap Icons
+- Fetch API
+- LocalStorage
+- SessionStorage
+
+---
+
+### Backend
+Repositorio:
+
+https://github.com/TomiCuevas/ModulosCuevas
+
+Tecnologías utilizadas:
+- Node.js
+- Express.js
+- CORS
+- JSON como persistencia de datos
+
+Servidor backend:
+
+http://localhost:3001
+
+---
 
 ## Contenido del proyecto
-- index.html → Página de inicio (Login).
 
-- Registro.html → Página de registro.
+- index.html → Página principal de login.
+
+- Registro.html → Página de registro de usuarios.
 
 - home.html → Página principal del sitio.
 
@@ -30,25 +80,43 @@ Incluye autenticación completa, carrito por usuario, sistema de favoritos, rend
 
 - favoritos.html → Sección de favoritos.
 
+- miscompras.html → Historial de compras realizadas.
+
 - contacto.html → Página de contacto.
+
+---
 
 ## JavaScript
 
-- auth.js → Registro, login, logout y recuperación.
+### APIs
+- auth.api.js → Login y registro mediante backend.
 
-- navbar.js → Navbar dinámico según usuario.
+- product.api.js → Obtención de productos y categorías.
 
-- carrito.js → Carrito por usuario, cantidades, totales, modales y toasts.
+- sale.api.js → Gestión de ventas y órdenes de compra.
+
+- app.js → Configuración de URL base del backend.
+
+---
+
+### Scripts
+- auth.js → Registro, login, logout y validaciones.
+
+- navbar.js → Navbar dinámica según estado del usuario.
+
+- carrito.js → Carrito por usuario, cantidades y compra.
 
 - wishlist.js → Sistema de favoritos por usuario.
 
-- renderProducts.js → Render de productos por categoría y tarjetas.
+- renderProducts.js → Render dinámico de productos.
 
-- dataPages.js → Control de estados y comportamiento según la página.
+- ventas.js → Historial de compras.
 
-- homeCarousel.js (si corresponde) → Carrusel del Home.
+- dataPages.js → Comportamiento y estados según página.
 
-- Estilos (CSS)
+---
+
+## Estilos (CSS)
 
 - styless.css → Estilos generales del sitio.
 
@@ -56,63 +124,120 @@ Incluye autenticación completa, carrito por usuario, sistema de favoritos, rend
 
 - Registro.css → Estilos del Registro.
 
-- destacados.css → Estilos de categorías y productos destacados.
+- destacados.css → Estilos de productos y categorías.
 
-- contacto.css → Estilos del formulario de contacto.
+- contacto.css → Estilos de contacto.
+
+---
 
 ## Imágenes
 
-Imágenes optimizadas en formato .webp:
+Imágenes optimizadas en formato `.webp`.
 
-- Carpeta camisas/
+Incluye:
+- Camisas
+- Trajes
+- Zapatos
+- Logo institucional
+- Fondo principal
+- Banners y material visual
 
-- Carpeta trajes/
-
-- Carpeta zapatos/
-
-- zammot_bowtie.webp → Logo.
-
-- zammot_bg.webp → Fondo principal.
-
-- Banners y material visual de soporte.
-
-- Datos
-
-## products.json → Archivo JSON con todos los productos:
-- id, título, descripción, precio, imagen, categoría.
+---
 
 ## Funcionalidades
 
-- Registro y login con validaciones reales.
+- Registro y login mediante backend.
 
-- Navbar dinámico según estado del usuario.
+- Navbar dinámica según sesión activa.
 
-- Carrito con persistencia por correo electrónico.
+- Carrito persistente por usuario.
 
-- Favoritos (Wishlist) por usuario.
+- Sistema de favoritos por usuario.
 
-- Contadores dinámicos en la navbar.
+- Contadores dinámicos en navbar.
 
-- Render de productos desde JSON usando fetch().
+- Render dinámico de productos utilizando fetch().
 
-- Modales elegantes para ver producto.
+- Generación de órdenes de compra.
 
-- Toast animado tipo Mercado Libre al agregar al carrito.
+- Historial de compras conectado al backend.
 
-- Páginas protegidas (carrito y favoritos requieren login).
+- Persistencia mediante LocalStorage y SessionStorage.
 
-- Actualización automática de cantidades y totales.
+- Toasts y modales personalizados.
+
+- Páginas protegidas para usuarios logueados.
 
 - Diseño responsive completo.
 
-## Cómo abrir el proyecto
+- Comunicación cliente-servidor mediante Express.js.
 
-- Clonar o descargar el repositorio.
+---
 
-- Abrir la carpeta en Visual Studio Code.
+## Funcionalidades técnicas implementadas
 
-- Iniciar Live Server.
+- Arquitectura multirepo.
 
-- Abrir index.html.
+- Consumo de API REST mediante fetch.
 
-- Registrarse o iniciar sesión para navegar todo el sitio.
+- Métodos GET, POST, PUT y DELETE.
+
+- Persistencia con archivos JSON.
+
+- SessionStorage para sesión activa.
+
+- LocalStorage para carrito y favoritos.
+
+- Backend desarrollado con Express.js.
+
+- Comunicación frontend-backend mediante CORS.
+
+---
+
+## Cómo ejecutar el proyecto
+
+### Clonar repositorios
+
+Frontend:
+
+git clone https://github.com/TomiCuevas/zammot-ecommerce.git
+
+
+Backend:
+git clone https://github.com/TomiCuevas/ModulosCuevas.git
+
+cd ModulosCuevas
+
+npm install
+
+node index.js
+
+
+
+## Relación con el backend
+
+El frontend consume información desde el backend utilizando fetch.
+
+La comunicación permite:
+- Obtener productos.
+- Filtrar categorías.
+- Registrar usuarios.
+- Iniciar sesión.
+- Crear órdenes de compra.
+- Consultar historial de compras.
+
+---
+
+## Notas
+
+- El proyecto utiliza arquitectura multirepo.
+- El backend administra usuarios, productos y ventas.
+- Los datos se almacenan mediante archivos JSON.
+- Se implementa comunicación cliente-servidor utilizando Express.js.
+- El archivo .gitignore evita subir dependencias innecesarias.
+
+---
+
+## Autor
+
+Tomás Cuevas
