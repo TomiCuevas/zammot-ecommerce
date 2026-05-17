@@ -1,11 +1,11 @@
-//obtener email del logueado
+// obtener email del logueado
 function getUserEmail() {
     const user = sessionStorage.getItem("loggedUser");
     if (!user) return null;
     return JSON.parse(user).email;
 }
 
-//clave unica de cada usuario
+// clave única de cada usuario
 function getWishlistKey() {
     const email = getUserEmail();
     if (!email) return null;
@@ -29,7 +29,7 @@ function saveWishlist(list) {
     localStorage.setItem(KEY, JSON.stringify(list));
 }
 
-// cartel para intruso
+// cartel para usuario no logueado
 function showLoginRequiredModal() {
     const modal = document.createElement("div");
 
@@ -88,7 +88,7 @@ function showLoginRequiredModal() {
     document.body.appendChild(modal);
 }
 
-//agregar y sacar favorito
+// agregar y sacar favorito
 function toggleFavorite(productId) {
     if (localStorage.getItem("isLoggedIn") !== "true") {
         showLoginRequiredModal();
@@ -117,17 +117,26 @@ function isFavorite(productId) {
 }
 
 function updateWishlistIcon(productId) {
-    const btn = document.querySelector(`#fav-${productId}`);
-    if (!btn) return;
+    const buttons = document.querySelectorAll(
+        `[data-fav-id="${productId}"]`
+    );
 
-    if (isFavorite(productId)) {
-        btn.innerHTML = `<i class="bi bi-heart-fill" style="color:#dc3545;"></i>`;
-    } else {
-        btn.innerHTML = `<i class="bi bi-heart"></i>`;
-    }
+    if (!buttons.length) return;
+
+    buttons.forEach(btn => {
+        if (isFavorite(productId)) {
+            btn.innerHTML = `
+                <i class="bi bi-heart-fill" style="color:#dc3545;"></i>
+            `;
+        } else {
+            btn.innerHTML = `
+                <i class="bi bi-heart"></i>
+            `;
+        }
+    });
 }
 
-//contador de favoritos en navbar evitando errores NaN
+// contador de favoritos en navbar evitando errores NaN
 function updateWishlistCount() {
     const counter = document.getElementById("wishlist-count");
     if (!counter) return;
@@ -139,13 +148,15 @@ function updateWishlistCount() {
 }
 
 function removeFavoriteCard(productId, updatedList) {
-    const card = document.querySelector(`#card-${productId}`);
+    const cards = document.querySelectorAll(
+        `[data-card-id="${productId}"]`
+    );
 
-    if (card) {
+    cards.forEach(card => {
         card.style.transition = "opacity .4s ease";
         card.style.opacity = "0";
         setTimeout(() => card.remove(), 400);
-    }
+    });
 
     if (updatedList.length === 0) {
         const container = document.getElementById("fav-list");

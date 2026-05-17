@@ -69,7 +69,7 @@ async function renderProducts(category) {
 function renderProductCard(product) {
 
     return `
-    <div class="card m-3 shadow d-flex flex-column h-100 product-card" style="width: 18rem;">
+    <div class="card m-3 shadow d-flex flex-column h-100 product-card" data-card-id="${product.id}" style="width: 18rem;">
 
         <img src="${product.img}" class="product-img" alt="${product.title}">
 
@@ -81,7 +81,7 @@ function renderProductCard(product) {
 
                 <button
                     class="btn btn-light btn-sm"
-                    id="fav-${product.id}"
+                    data-fav-id="${product.id}"
                     onclick="toggleFavorite('${product.id}')">
 
                     <i class="bi bi-heart"></i>
@@ -107,17 +107,17 @@ function renderProductCard(product) {
 
                 <button
                     class="qty-btn"
-                    onclick="changeQty('${product.id}', -1)">
+                    onclick="changeQty(this, -1)">
                     -
                 </button>
 
-                <span id="qty-${product.id}" class="mx-2">
+                <span class="mx-2 qty-value">
                     1
                 </span>
 
                 <button
                     class="qty-btn"
-                    onclick="changeQty('${product.id}', 1)">
+                    onclick="changeQty(this, 1)">
                     +
                 </button>
 
@@ -127,7 +127,7 @@ function renderProductCard(product) {
                 ? `
                     <button
                         class="btn btn-primary w-100 mt-auto"
-                        onclick="addProductToCart('${product.id}')">
+                        onclick="addProductToCart(this, '${product.id}')">
 
                         <i class="bi bi-cart-plus"></i>
                         Agregar al carrito
@@ -151,9 +151,13 @@ function renderProductCard(product) {
     `;
 }
 
-function changeQty(id, amount) {
+function changeQty(button, amount) {
 
-    const qtySpan = document.getElementById(`qty-${id}`);
+    const card = button.closest(".product-card");
+
+    if (!card) return;
+
+    const qtySpan = card.querySelector(".qty-value");
 
     if (!qtySpan) return;
 
@@ -167,7 +171,7 @@ function changeQty(id, amount) {
 
 }
 
-function addProductToCart(id) {
+function addProductToCart(button, id) {
 
     const product = PRODUCTS_CACHE.find(p => p.id === id);
 
@@ -181,7 +185,11 @@ function addProductToCart(id) {
         return;
     }
 
-    const qtySpan = document.getElementById(`qty-${id}`);
+    const card = button.closest(".product-card");
+
+    const qtySpan = card
+        ? card.querySelector(".qty-value")
+        : null;
 
     const qty = qtySpan
         ? parseInt(qtySpan.textContent) || 1

@@ -1,7 +1,7 @@
 # ZAMMOT – E-commerce
 
 **Alumno:** Cuevas Tomás Gonzalo  
-**Materia:** Aplicaciones Web II
+**Materia:** Aplicaciones Web II  
 **Trabajo Práctico:** E-commerce – Trabajo Práctico
 
 ---
@@ -91,7 +91,7 @@ http://localhost:3001
 ### APIs
 - auth.api.js → Login y registro mediante backend.
 
-- product.api.js → Obtención de productos y categorías.
+- product.api.js → Obtención de productos, categorías y filtros dinámicos.
 
 - sale.api.js → Gestión de ventas y órdenes de compra.
 
@@ -158,6 +158,8 @@ Incluye:
 
 - Render dinámico de productos utilizando fetch().
 
+- Filtros dinámicos por categoría y precio consumiendo endpoints del backend.
+
 - Generación de órdenes de compra.
 
 - Historial de compras conectado al backend.
@@ -171,6 +173,8 @@ Incluye:
 - Diseño responsive completo.
 
 - Comunicación cliente-servidor mediante Express.js.
+
+- Integración completa frontend-backend mediante arquitectura multirepo.
 
 ---
 
@@ -192,6 +196,8 @@ Incluye:
 
 - Comunicación frontend-backend mediante CORS.
 
+- Filtrado dinámico y escalable desde el backend mediante query params.
+
 ---
 
 ## Cómo ejecutar el proyecto
@@ -202,8 +208,8 @@ Frontend:
 
 git clone https://github.com/TomiCuevas/zammot-ecommerce.git
 
-
 Backend:
+
 git clone https://github.com/TomiCuevas/ModulosCuevas.git
 
 cd ModulosCuevas
@@ -212,7 +218,7 @@ npm install
 
 node index.js
 
-
+---
 
 ## Relación con el backend
 
@@ -221,6 +227,7 @@ El frontend consume información desde el backend utilizando fetch.
 La comunicación permite:
 - Obtener productos.
 - Filtrar categorías.
+- Aplicar filtros dinámicos por precio y categoría.
 - Registrar usuarios.
 - Iniciar sesión.
 - Crear órdenes de compra.
@@ -235,6 +242,7 @@ La comunicación permite:
 - Los datos se almacenan mediante archivos JSON.
 - Se implementa comunicación cliente-servidor utilizando Express.js.
 - El archivo .gitignore evita subir dependencias innecesarias.
+- Se implementa filtrado dinámico desde backend utilizando query params.
 
 ---
 
